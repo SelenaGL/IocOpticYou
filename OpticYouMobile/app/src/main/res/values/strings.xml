@@ -1,0 +1,20 @@
+<resources>
+<string name="app_name">OpticYou</string>
+<string name="cancel">Cancel·lar</string>
+<string name="login">Inici sessió</string>
+<string name="menu">Menú</string>
+<string name="back_button">Enrere</string>
+<string name="add_user">Add user</string>
+<string name="username">Username</string>
+<string name="name">Name</string>
+<string name="server">Servidor</string>
+<string name="port">Port</string>
+<string name="password">Contrasenya</string>
+<string name="connection_error_try_again">Error de connexió! Torna-ho a provar</string>
+<string name="admin_welcome">Benvingut administrador</string>
+<string name="user_welcome">Benvingut usuari</string>
+<string name="find_user_by_username">Find user by username</string>
+<string name="query">Query</string>
+<string name="users_list">Users List</string>
+<string name="data_could_not_be_processed">Data could not be processed</string>
+</resources>
