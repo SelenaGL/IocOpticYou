@@ -1,5 +1,6 @@
 package com.example.opticyou.ui
 
+import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -20,6 +21,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -41,6 +43,10 @@ fun LoginScreen(
     viewModel: LoginViewModel = viewModel(),
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current  // ✅ Aquí tenim el context
+    val sharedPreferences = remember {
+        context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+    }
     //var server by remember {mutableStateOf("")}
     //var port by remember {mutableStateOf("")}
     var username by remember { mutableStateOf("") }
@@ -87,6 +93,8 @@ fun LoginScreen(
                 if (username.isNotBlank() && password.isNotBlank()) {
                     viewModel.doLogin(username, password) { response ->
                         if (response.success) {
+                            // Guardem el token després del login correcte
+                            sharedPreferences.edit().putString("auth_token", response.token).apply()
                             navigate(response)
                         } else {
                             showError = true
