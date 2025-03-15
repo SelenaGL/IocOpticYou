@@ -6,5 +6,6 @@ package com.example.opticyou.data
  */
 data class LoginUiState(
     /** Has the login been tried? **/
-    var loginTried:Boolean=false
+    var loginTried:Boolean=false,
+    val goodResult: Boolean=false
 )

@@ -6,5 +6,5 @@ package com.example.opticyou.data
 data class LoginResponse(
     val success: Boolean,
     val token: String,
-    val role: String
+    val rol: String
 )

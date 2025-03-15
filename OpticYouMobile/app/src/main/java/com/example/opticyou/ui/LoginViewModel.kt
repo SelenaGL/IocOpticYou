@@ -20,10 +20,11 @@ import kotlinx.coroutines.withContext
  */
 class LoginViewModel(
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
-    private val mainDispatcher: CoroutineDispatcher = Dispatchers.Main
+    private val mainDispatcher: CoroutineDispatcher = Dispatchers.Main,
+    private val serverRequests: ServerRequests = ServerRequests // ✅ Permet substituir per un Fake en tests
 ) : IOViewModel() {
 
-    private val _uiState = MutableStateFlow(LoginUiState())
+    protected val _uiState = MutableStateFlow(LoginUiState())
     val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
 
     fun setLoginTried(tried: Boolean) {
@@ -40,20 +41,29 @@ class LoginViewModel(
     fun doLogin(username: String, password: String, onSuccess: (LoginResponse) -> Unit) {
         println("doLogin() cridat amb: $username - $password")  // Debug log
 
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(ioDispatcher) {
             val response = try {
-                ServerRequests.login(username, password)
+                serverRequests.login(username, password)
             } catch (e: Exception) {
                 println("Error a ServerRequests.login(): ${e.message}")  // Debug log
                 null
             }
-            withContext(Dispatchers.Main) {
-                println("🔍 Resposta del servidor: $response")
+            withContext(mainDispatcher) {
+                println("Resposta del servidor: $response")
+
+                // Assegurem-nos que actualitza el `StateFlow`
+                _uiState.value = _uiState.value.copy(
+                    loginTried = true,
+                    goodResult = response?.success == true
+                )
+
+                println("🔵 Estat actualitzat: loginTried=${_uiState.value.loginTried}, goodResult=${_uiState.value.goodResult}")
+
 
                 if (response != null && response.success) {
                     onSuccess(response)
                 } else {
-                    onSuccess(LoginResponse(success = false, token = "", role = ""))
+                    onSuccess(LoginResponse(success = false, token = "", rol = ""))
                 }
             }
         }

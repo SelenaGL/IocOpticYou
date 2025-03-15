@@ -6,7 +6,6 @@ import org.junit.Test
 import com.example.opticyou.communications.ServerRequests
 import com.example.opticyou.data.LoginResponse
 import com.example.opticyou.ui.LoginViewModel
-import io.mockk.coEvery
 import io.mockk.mockkObject
 import io.mockk.unmockkAll
 import kotlinx.coroutines.Dispatchers
@@ -30,7 +29,7 @@ import org.junit.Before
  * - Comportament del LoginViewModel amb credencial correctes i incorrectes
  */
 
-class LoginUnitTests {
+class LoginUnitServerTests {
 
     private val testDispatcher = StandardTestDispatcher()
 
@@ -51,10 +50,8 @@ class LoginUnitTests {
      */
     @Test
     fun login_WrongUsername() = runTest {
-        // Simulem que `ServerRequests.login` retorna un LoginResponse fals
-        coEvery { ServerRequests.login("admin", "1234") } returns LoginResponse(false, "", "")
+        val response = ServerRequests.login("admin@optica.cat", "error")
 
-        val response = ServerRequests.login("admin", "1234")
         assertNotNull("La resposta no pot ser null", response)
         // El login hauria de fallar perquè el username no és un email
         assertFalse("El login hauria de fallar si el username no és un email", response!!.success)
@@ -66,11 +63,10 @@ class LoginUnitTests {
      */
     @Test
     fun loginAdmin() = runBlocking {
-        coEvery { ServerRequests.login("admin@optica.cat", "1234") } returns LoginResponse(true, "mockTokenAdmin", "admin")
         val response = ServerRequests.login("admin@optica.cat", "1234")
         assertNotNull("La resposta no pot ser null", response)
-        assertTrue(response!!.success)
-        assertEquals("admin", response.rol)
+        assertEquals(true, response!!.success)
+        assertEquals("admin", response?.rol)
     }
 
     /**
@@ -78,11 +74,10 @@ class LoginUnitTests {
      */
     @Test
     fun loginUser() = runBlocking {
-        coEvery { ServerRequests.login("usuari@optica.cat", "1234") } returns LoginResponse(true, "mockTokenUser", "user")
         val response = ServerRequests.login("usuari@optica.cat", "1234")
         assertNotNull("La resposta no pot ser null", response)
-        assertTrue(response!!.success)
-        assertEquals("user", response.rol)
+        assertEquals(true, response!!.success)
+        assertEquals("user", response?.rol)
     }
 
     /**
@@ -90,10 +85,11 @@ class LoginUnitTests {
      */
     @Test
     fun loginWrongPassword() = runBlocking {
-        coEvery { ServerRequests.login("admin@optica.cat", "error") } returns LoginResponse(false, "", "")
         val response = ServerRequests.login("admin@optica.cat", "error")
         assertNotNull("La resposta no pot ser null", response)
+        // Comprovem que el login falla
         assertFalse("El login hauria de fallar amb contrasenya incorrecta", response!!.success)
+        // En aquest cas, el rol hauria de ser null
         assertEquals("", response.rol)
     }
 
@@ -102,8 +98,8 @@ class LoginUnitTests {
      */
     @Test
     fun logout() = runBlocking {
-        coEvery { ServerRequests.logout() } returns true
         val response = ServerRequests.logout()
+        // La funció logout retorna un Boolean: true si el codi de retorn és OK
         assertTrue("Logout hauria de ser true quan no hi ha sessió activa", response)
     }
 
@@ -114,21 +110,18 @@ class LoginUnitTests {
     @Test
     fun loginViewModel_CorrectCredentials() = runTest {
         val viewModel = LoginViewModel(ioDispatcher = testDispatcher, mainDispatcher = testDispatcher)
-        coEvery { ServerRequests.login("admin@optica.cat", "1234") } returns LoginResponse(true, "mockTokenAdmin", "admin")
         var callbackCalled = false
         val callback: (LoginResponse) -> Unit = { response ->
             callbackCalled = true
             assertTrue("Resposta exitosa amb credencials correctes", response.success)
         }
-
         viewModel.doLogin("admin@optica.cat", "1234", callback)
-
         // Avança el dispatcher per processar totes les coroutines pendents
         testDispatcher.scheduler.advanceUntilIdle()
 
         assertTrue("El callback hauria d'haver estat cridat", callbackCalled)
         assertTrue("loginTried hauria de ser true", viewModel.uiState.value.loginTried)
-        assertTrue("goodResult hauria de ser true per credencials vàlides", viewModel.uiState.value.goodResult)
+        assertTrue("goodResult hauria de ser true per credencials vàlides", viewModel.getGoodResult())
     }
 
     /**
@@ -138,19 +131,17 @@ class LoginUnitTests {
     @Test
     fun loginViewModel_IncorrectCredentials() = runTest {
         val viewModel = LoginViewModel(ioDispatcher = testDispatcher, mainDispatcher = testDispatcher)
-        coEvery { ServerRequests.login("admin@optica.cat", "wrong") } returns LoginResponse(false, "", "")
         var callbackCalled = false
         val callback: (LoginResponse) -> Unit = { response ->
             callbackCalled = true
             assertFalse("Resposta fallida amb credencials incorrectes", response.success)
         }
         viewModel.doLogin("admin@optica.cat", "wrong", callback)
-
         testDispatcher.scheduler.advanceUntilIdle()
 
         assertTrue("El callback hauria d'haver estat cridat", callbackCalled)
         assertTrue("loginTried hauria de ser true", viewModel.uiState.value.loginTried)
-        assertFalse("goodResult hauria de ser false per credencials incorrectes", viewModel.uiState.value.goodResult)
+        assertFalse("goodResult hauria de ser false per credencials incorrectes", viewModel.getGoodResult())
     }
 }
 

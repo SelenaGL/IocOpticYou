@@ -34,7 +34,7 @@ object ServerCommunication {
             } catch (e: Exception) {
                 println("Excepció de connexió: ${e.message}")
                 println("Retornant mock data.")
-                mockLogin(username) // ✅ Retornem un mock si el servidor no està disponible
+                mockLogin(username) // Retornem un mock si el servidor no està disponible
             }
         }
     }
@@ -43,9 +43,9 @@ object ServerCommunication {
     // 🔹 Simulació de login quan el servidor no està disponible
     private fun mockLogin(username: String): LoginResponse {
         return if (username == "admin@optica.cat") {
-            LoginResponse(success = true, role = "admin", token = "mockAdminToken")
+            LoginResponse(success = true, rol = "admin", token = "mockAdminToken")
         } else {
-            LoginResponse(success = true, role = "user", token = "mockUserToken")
+            LoginResponse(success = true, rol = "user", token = "mockUserToken")
         }
     }
 

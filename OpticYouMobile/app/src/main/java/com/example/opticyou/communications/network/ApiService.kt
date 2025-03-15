@@ -11,7 +11,7 @@ import retrofit2.http.Path
 
 //Classe per definir els EndPoints que l'app cridarà al servidor
 interface ApiService {
-    @POST("login")
+    @POST("auth/login-user")
     fun login(@Body loginRequest: LoginRequest): Call<LoginResponse>
 
     @GET("usuari/all")

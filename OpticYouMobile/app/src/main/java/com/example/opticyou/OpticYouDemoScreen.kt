@@ -110,22 +110,24 @@ fun OpticYouDemoApp(
                 LoginScreen(
                     navigate = { loginResponse ->
                         if (loginResponse.success) {
-                            when (loginResponse.role) {
-                                "admin" -> navController.navigate(Screens.AdminMenu.name) {
-                                    popUpTo(navController.graph.startDestinationId) {
-                                        inclusive = true
+                            println("Navegant a: ${loginResponse.rol}")
+                            when (loginResponse.rol) {
+                                "admin" -> {
+                                    println("Navegant a Screens.AdminMenu")
+                                    navController.navigate(Screens.AdminMenu.name) {
+                                        popUpTo(navController.graph.startDestinationId) { inclusive = true }
+                                        launchSingleTop = true
                                     }
-                                    launchSingleTop = true
                                 }
-
-                                "user" -> navController.navigate(Screens.UserMenu.name) {
-                                    popUpTo(navController.graph.startDestinationId) {
-                                        inclusive = true
+                                "user" -> {
+                                    println("Navegant a Screens.UserMenu")
+                                    navController.navigate(Screens.UserMenu.name) {
+                                        popUpTo(navController.graph.startDestinationId) { inclusive = true }
+                                        launchSingleTop = true
                                     }
-                                    launchSingleTop = true
                                 }
-
                                 else -> {
+                                    println("No s'ha pogut determinar el rol")
                                     // Per defecte, si no és admin ni user, podríem navegar al menú d'usuari
                                     navController.navigate(Screens.UserMenu.name) {
                                         popUpTo(navController.graph.startDestinationId) {
@@ -137,6 +139,7 @@ fun OpticYouDemoApp(
                             }
                         } else {
                             // Si el login falla, no es navega. La pantalla de login mostrarà el missatge d'error.
+                            println("Error en el login")
                         }
                     },
                     modifier = Modifier

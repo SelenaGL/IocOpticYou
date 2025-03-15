@@ -92,6 +92,11 @@ dependencies {
     // MockServer per simular API
     testImplementation("org.mock-server:mockserver-netty:5.15.0")
     testImplementation("org.mock-server:mockserver-client-java:5.15.0")
+    testImplementation ("org.mockito:mockito-core:4.11.0")
+    testImplementation ("io.mockk:mockk:1.13.3")
+    testImplementation ("io.mockk:mockk:1.13.3")
+    testImplementation ("io.mockk:mockk-android:1.13.3") // Si fas proves instrumentades
+
     // Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")

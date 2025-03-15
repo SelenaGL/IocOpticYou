@@ -52,7 +52,7 @@ class MockServerTest {
         val response = ServerRequests.login("user@optica.cat", "1234")
 
         assertEquals(true, response?.success)
-        assertEquals("user", response?.role)
+        assertEquals("user", response?.rol)
         assertEquals("tokenUser", response?.token)
     }
 
@@ -82,7 +82,7 @@ class MockServerTest {
         val response = ServerRequests.login("admin@optica.cat", "1234")
 
         assertEquals(true, response?.success)
-        assertEquals("admin", response?.role)
+        assertEquals("admin", response?.rol)
         assertEquals("tokenAdmin", response?.token)
     }
 

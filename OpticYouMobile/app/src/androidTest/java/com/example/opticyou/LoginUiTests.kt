@@ -1,17 +1,13 @@
-package com.example.opticyou
-
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
+import com.example.opticyou.MainActivity
 import org.junit.Rule
 import org.junit.Test
 
-
 /**
- * Proves de la IU per validar la funcionalitat del login i la navegació de pantalles:
- * -Amb credencials correctes, es mostra el menú corresponent
- * -Amb credencials incorrectes, es mostra un missatge d'error.
+ * Proves de la IU per validar la funcionalitat del login i la navegació de pantalles.
  */
 class LoginUiTests {
 
@@ -27,7 +23,8 @@ class LoginUiTests {
         composeTestRule.onNodeWithTag("passwordField").performTextInput("1234")
         composeTestRule.onNodeWithTag("loginButton").performClick()
 
-        // Verifiquem que es navega a la pantalla de menú d'administrador
+        // ✅ Espera per donar temps a la navegació
+        composeTestRule.waitForIdle()
         composeTestRule.onNodeWithTag("adminMenu").assertExists()
     }
 
@@ -36,12 +33,12 @@ class LoginUiTests {
      */
     @Test
     fun loginAdmin_Error() {
-        // Introdueix credencials incorrectes
         composeTestRule.onNodeWithTag("usernameField").performTextInput("admin@optica.cat")
         composeTestRule.onNodeWithTag("passwordField").performTextInput("wrong")
         composeTestRule.onNodeWithTag("loginButton").performClick()
 
-        // Ara comprovem que el missatge d'error existeix
+        // ✅ Espera per assegurar que el missatge d'error es mostra
+        composeTestRule.waitForIdle()
         composeTestRule.onNodeWithTag("loginErrorText").assertExists()
     }
 
@@ -54,7 +51,8 @@ class LoginUiTests {
         composeTestRule.onNodeWithTag("passwordField").performTextInput("1234")
         composeTestRule.onNodeWithTag("loginButton").performClick()
 
-        // Verifiquem que es navega a la pantalla de menú usuari
+        // ✅ Espera per donar temps a la navegació
+        composeTestRule.waitForIdle()
         composeTestRule.onNodeWithTag("userMenu").assertExists()
     }
 
@@ -63,12 +61,12 @@ class LoginUiTests {
      */
     @Test
     fun loginUser_Error() {
-        // Introdueix credencials incorrectes
         composeTestRule.onNodeWithTag("usernameField").performTextInput("usuari@optica.cat")
         composeTestRule.onNodeWithTag("passwordField").performTextInput("wrong")
         composeTestRule.onNodeWithTag("loginButton").performClick()
 
-        // Ara comprovem que el missatge d'error existeix
+        // ✅ Espera per assegurar que el missatge d'error es mostra
+        composeTestRule.waitForIdle()
         composeTestRule.onNodeWithTag("loginErrorText").assertExists()
     }
 }

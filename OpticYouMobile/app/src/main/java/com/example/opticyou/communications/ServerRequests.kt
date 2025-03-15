@@ -21,7 +21,7 @@ object ServerRequests {
     // A mutex is used to ensure that reads and writes are thread-safe.
     private val accessMutex = Mutex()
 
-    suspend fun login(username: String, password: String): LoginResponse? = accessMutex.withLock {
+    open suspend fun login(username: String, password: String): LoginResponse? = accessMutex.withLock {
         return ServerCommunication.login(username, password)
     }
 
