@@ -13,20 +13,19 @@ import retrofit2.awaitResponse
 
 object ServerCommunication {
 
-    // 🔹 Mètode per a fer login (real o mock si el servidor no està llest)
+    // Mètode per a fer login (real o mock si el servidor no està llest)
     suspend fun login(username: String, password: String): LoginResponse? {
         println("Enviant petició de login amb $username - $password")
         return withContext(Dispatchers.IO) {
             try {
                 //Intentem fer login amb el servidor real
-                val response = RetrofitClient.instance.login(LoginRequest(username, password)).awaitResponse()
+                val response =
+                    RetrofitClient.instance.login(LoginRequest(username, password)).awaitResponse()
                 println("Resposta del servidor: ${response.code()} - ${response.message()}")
-                println("Cos de la resposta: ${response.body()?.toString() ?: "Resposta buida"}")
+                println("Contingut de la resposta: ${response.body()?.toString() ?: "Resposta buida"}")
 
                 if (response.isSuccessful) {
                     val body = response.body()
-                    //println("JSON rebut: $body")
-                    println("JSON rebut: ${response.body()?.toString() ?: "Resposta buida"}")
                     body
                 } else {
                     null
@@ -34,18 +33,31 @@ object ServerCommunication {
             } catch (e: Exception) {
                 println("Excepció de connexió: ${e.message}")
                 println("Retornant mock data.")
-                mockLogin(username) // Retornem un mock si el servidor no està disponible
+                mockLogin(username, password) // Retornem un mock si el servidor no està disponible
             }
         }
     }
 
 
-    // 🔹 Simulació de login quan el servidor no està disponible
-    private fun mockLogin(username: String): LoginResponse {
-        return if (username == "admin@optica.cat") {
-            LoginResponse(success = true, rol = "admin", token = "mockAdminToken")
-        } else {
+    // Simulació de login quan el servidor no està disponible
+    private fun mockLogin(username: String, password: String): LoginResponse {
+        // Si el username no conté un "@", considerem que no és vàlid
+        if (!username.contains("@")) {
+            return LoginResponse(success = false, token = "", rol = "")
+        }
+        // Admin
+        if (username == "admin@optica.cat") {
+            return if (password == "1234") {
+                LoginResponse(success = true, rol = "admin", token = "mockAdminToken")
+            } else {
+                LoginResponse(success = false, token = "", rol = "")
+            }
+        }
+        // Usuari
+        return if (password == "1234") {
             LoginResponse(success = true, rol = "user", token = "mockUserToken")
+        } else {
+            LoginResponse(success = false, token = "", rol = "")
         }
     }
 
@@ -55,7 +67,7 @@ object ServerCommunication {
                 val response = RetrofitClient.instance.getUser(username).awaitResponse()
                 if (response.isSuccessful) response.body() else null
             } catch (e: Exception) {
-                println("⚠️ Error al recuperar usuari. Retornant mock.")
+                println("Error al recuperar usuari. Retornant mock.")
                 mockQueryUser(username)
             }
         }
@@ -66,8 +78,8 @@ object ServerCommunication {
         return when (username) {
             "admin@optica.cat" -> User("admin@optica.cat", "Administrador Mock")
             "user@optica.cat" -> User("user@optica.cat", "Usuari Mock")
-            "100" -> null // 🔥 Simulem "usuari inexistent"
-            "200" -> throw Exception("⚠️ Error en les comunicacions") // 🔥 Simulem un error de xarxa
+            "100" -> null // Simulem "usuari inexistent"
+            "200" -> throw Exception("Error en les comunicacions") // 🔥 Simulem un error de xarxa
             else -> User(username, "Usuari Fictici")
         }
     }
@@ -78,7 +90,7 @@ object ServerCommunication {
                 val response = RetrofitClient.instance.getAllUsers().awaitResponse()
                 if (response.isSuccessful) response.body() else null
             } catch (e: Exception) {
-                println("⚠️ Error al llistar usuaris. Retornant mock.")
+                println("Error al llistar usuaris. Retornant mock.")
                 mockListUsers()
             }
         }
@@ -93,15 +105,20 @@ object ServerCommunication {
     }
 
 
-    suspend fun logout(): Boolean = withContext(Dispatchers.IO) {
+    suspend fun logout(token: String? = null): Boolean = withContext(Dispatchers.IO) {
+        if (token == null) {
+            println("No hi ha token")
+            return@withContext true
+        }
         try {
-            val response = RetrofitClient.instance.logout().awaitResponse()
+            val response = RetrofitClient.instance.logoutString(token).awaitResponse()
+            println("Resposta del servidor: ${response.code()} - ${response.message()}")
+            println("Contingut de la resposta: ${response.body() ?: "null"}")
             response.isSuccessful
         } catch (e: Exception) {
             println("Error en logout: ${e.message}")
-            println("Retornant mock data.") // Debug
-            mockLogout() // Retornem un mock si el servidor no està disponible
-            false
+            println("Retornant mock data.")
+            mockLogout()
         }
     }
 

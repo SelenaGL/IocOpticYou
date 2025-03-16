@@ -1,6 +1,7 @@
 
 package com.example.opticyou.ui
 
+import android.content.Context
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -15,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -36,9 +38,18 @@ fun MenuUserScreen(
     modifier: Modifier = Modifier,
     options: Map<String, String>,
     onOptionClicked: (String) -> Unit = {},
-    onLogoutClicked: (MenuUserViewModel) -> Unit = {}
+    onLogoutClicked: (MenuUserViewModel, Context) -> Unit = { viewModel, context ->
+        // Accedeix a SharedPreferences amb el context actual
+        val sharedPreferences = context.getSharedPreferences("token", Context.MODE_PRIVATE)
+        sharedPreferences.edit().remove("session_token").apply()
+        // Aquí pots afegir la navegació cap a la pantalla de login, per exemple:
+        // navController.navigate(Screens.Login.name) { popUpTo(0) }
+    }
 ) {
-    var viewModel:MenuUserViewModel = viewModel()
+    val viewModel:MenuUserViewModel = viewModel()
+    val context = LocalContext.current
+    val sharedPreferences = context.getSharedPreferences("token", Context.MODE_PRIVATE)
+    val token = sharedPreferences.getString("session_token", null)
 
     Box(
         modifier = Modifier.fillMaxSize()
@@ -72,8 +83,15 @@ fun MenuUserScreen(
             Spacer(modifier = Modifier.height(16.dp))
             Button(
                 onClick = {
-                    viewModel.logout()
-                    onLogoutClicked(viewModel)
+                    println("Token que s'envia al logout: $token")  // Afegir aquest log aquí
+                    if (token != null) {
+                        // Passa el token a la funció logout del ViewModel
+                        viewModel.logout(token)
+                        // Elimina el token de SharedPreferences
+                        sharedPreferences.edit().remove("session_token").apply()
+                    }
+                    // Finalment, crida el callback per navegar
+                    onLogoutClicked(viewModel, context)
                 },
                 modifier = Modifier
                     .fillMaxWidth(0.6f) // Mateixa amplada que els altres botons

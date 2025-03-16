@@ -33,8 +33,8 @@ object ServerRequests {
         return ServerCommunication.listUsers()
     }
 
-    suspend fun logout(): Boolean = accessMutex.withLock {
-        return ServerCommunication.logout()
+    suspend fun logout(token: String? = null): Boolean = accessMutex.withLock {
+        return ServerCommunication.logout(token)
     }
 
 //    suspend fun isLogged():Boolean = accessMutex.withLock {

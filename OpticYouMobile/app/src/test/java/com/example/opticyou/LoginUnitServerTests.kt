@@ -49,8 +49,8 @@ class LoginUnitServerTests {
      * Prova que l'inici de sessió amb un usuari sense email, falla".
      */
     @Test
-    fun login_WrongUsername() = runTest {
-        val response = ServerRequests.login("admin@optica.cat", "error")
+    fun login_WrongUsername() = runBlocking {
+        val response = ServerRequests.login("admin", "1234")
 
         assertNotNull("La resposta no pot ser null", response)
         // El login hauria de fallar perquè el username no és un email

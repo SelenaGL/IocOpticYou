@@ -21,7 +21,7 @@ import kotlinx.coroutines.withContext
 class LoginViewModel(
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private val mainDispatcher: CoroutineDispatcher = Dispatchers.Main,
-    private val serverRequests: ServerRequests = ServerRequests // ✅ Permet substituir per un Fake en tests
+    private val serverRequests: ServerRequests = ServerRequests // Permet substituir per un Fake en tests
 ) : IOViewModel() {
 
     protected val _uiState = MutableStateFlow(LoginUiState())
@@ -57,8 +57,7 @@ class LoginViewModel(
                     goodResult = response?.success == true
                 )
 
-                println("🔵 Estat actualitzat: loginTried=${_uiState.value.loginTried}, goodResult=${_uiState.value.goodResult}")
-
+                println("Estat actualitzat: loginTried=${_uiState.value.loginTried}, goodResult=${_uiState.value.goodResult}")
 
                 if (response != null && response.success) {
                     onSuccess(response)

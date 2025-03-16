@@ -12,9 +12,10 @@ import kotlinx.coroutines.launch
  */
 class MenuAdminViewModel : IOViewModel() {
 
-    fun logout() {
-        viewModelScope.launch (Dispatchers.IO){
-            ServerRequests.logout()
-         }
+    fun logout(token: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val success = ServerRequests.logout(token)
+            println("Resultat de logout: $success")
+        }
     }
 }

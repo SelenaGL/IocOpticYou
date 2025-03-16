@@ -92,7 +92,8 @@ class MockServerTest {
             .`when`(
                 HttpRequest.request()
                     .withMethod("POST")
-                    .withPath("/logout")
+                    .withPath("/auth/logout-string")
+                    .withBody("tokenUser")
             )
             .respond(
                 HttpResponse.response()
@@ -100,7 +101,7 @@ class MockServerTest {
                     .withBody("true")
             )
 
-        val result = ServerRequests.logout()
+        val result = ServerRequests.logout("tokenUser")
 
         assertEquals(true, result)
     }

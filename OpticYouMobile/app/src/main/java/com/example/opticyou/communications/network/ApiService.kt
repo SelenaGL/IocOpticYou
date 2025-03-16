@@ -6,6 +6,7 @@ import com.example.opticyou.data.User
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Path
 
@@ -20,8 +21,7 @@ interface ApiService {
     @GET("usuari/{username}")
     fun getUser(@Path("username") username: String): Call<User>
 
-
-    @POST("logout")
-    fun logout(): Call<Boolean>
+    @POST("auth/logout-string")
+    fun logoutString(@Body jwt: String): Call<Boolean>
 
 }

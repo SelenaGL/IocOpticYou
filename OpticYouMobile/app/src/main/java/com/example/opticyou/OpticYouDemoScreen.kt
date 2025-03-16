@@ -1,11 +1,14 @@
 package com.example.opticyou
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -19,8 +22,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -58,8 +63,14 @@ fun OpticYouDemoAppBar(
     navigateUp: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    TopAppBar(
-        title = { Text(stringResource(id = string.app_name)) },
+    CenterAlignedTopAppBar(
+        title = {
+            Image(
+                painter = painterResource(id = R.drawable.logo1def),
+                contentDescription = "Logo",
+                modifier = Modifier.size(200.dp)
+            )
+        },
         colors = TopAppBarDefaults.mediumTopAppBarColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer
         ),
@@ -69,7 +80,7 @@ fun OpticYouDemoAppBar(
                 IconButton(onClick = navigateUp) {
                     Icon(
                         imageVector = Icons.Filled.ArrowBack,
-                        contentDescription = stringResource(string.back_button)
+                        contentDescription = stringResource(R.string.back_button)
                     )
                 }
             }
@@ -110,8 +121,8 @@ fun OpticYouDemoApp(
                 LoginScreen(
                     navigate = { loginResponse ->
                         if (loginResponse.success) {
-                            println("Navegant a: ${loginResponse.rol}")
-                            when (loginResponse.rol) {
+                            println("Rol: ${loginResponse.rol}")
+                            when (loginResponse.rol.trim().lowercase()) {
                                 "admin" -> {
                                     println("Navegant a Screens.AdminMenu")
                                     navController.navigate(Screens.AdminMenu.name) {
@@ -119,7 +130,7 @@ fun OpticYouDemoApp(
                                         launchSingleTop = true
                                     }
                                 }
-                                "user" -> {
+                                "client" -> {
                                     println("Navegant a Screens.UserMenu")
                                     navController.navigate(Screens.UserMenu.name) {
                                         popUpTo(navController.graph.startDestinationId) { inclusive = true }
@@ -152,7 +163,7 @@ fun OpticYouDemoApp(
                 val context = LocalContext.current
                 MenuUserScreen(
                     onOptionClicked = { navController.navigate(it) },
-                    onLogoutClicked = {
+                    onLogoutClicked = { _, _ ->
                         navController.navigate(Screens.Login.name) {// We clear the stack of screens
                             popUpTo(Screens.UserMenu.name) { inclusive = true }
                             launchSingleTop = true
@@ -169,7 +180,7 @@ fun OpticYouDemoApp(
                 val context = LocalContext.current
                 MenuAdminScreen(
                     onOptionClicked = { navController.navigate(it) },
-                    onLogoutClicked = {
+                    onLogoutClicked = { _, _ ->
                         navController.navigate(Screens.Login.name) {// We clear the stack of screens
                             popUpTo(Screens.AdminMenu.name) { inclusive = true }
                             launchSingleTop = true

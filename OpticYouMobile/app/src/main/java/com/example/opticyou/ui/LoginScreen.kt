@@ -43,9 +43,9 @@ fun LoginScreen(
     viewModel: LoginViewModel = viewModel(),
     modifier: Modifier = Modifier
 ) {
-    val context = LocalContext.current  // ✅ Aquí tenim el context
+    val context = LocalContext.current
     val sharedPreferences = remember {
-        context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        context.getSharedPreferences("token", Context.MODE_PRIVATE)
     }
     //var server by remember {mutableStateOf("")}
     //var port by remember {mutableStateOf("")}
@@ -94,7 +94,9 @@ fun LoginScreen(
                     viewModel.doLogin(username, password) { response ->
                         if (response.success) {
                             // Guardem el token després del login correcte
-                            sharedPreferences.edit().putString("auth_token", response.token).apply()
+                            sharedPreferences.edit().putString("session_token", response.token).apply()
+                            val tokenGuardat = sharedPreferences.getString("session_token", null)
+                            println("Token guardat: $tokenGuardat")
                             navigate(response)
                         } else {
                             showError = true
@@ -111,9 +113,8 @@ fun LoginScreen(
             Text("Iniciar Sessió")
         }
 
-        // Error message if necessary
         if (viewModel.uiState.collectAsState().value.loginTried) {
-            if (!viewModel.uiIOState.collectAsState().value.goodResult) {
+            if (!viewModel.uiState.collectAsState().value.goodResult) {
                 Text(
                     text = stringResource(R.string.connection_error_try_again),
                     color = Color.Red,
