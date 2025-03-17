@@ -8,13 +8,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
 /**
- *  Holds and updates if the i/o operation has been successful.
- *  This data can be retrieved from the screen.
- *  This class would be a superclass of classes i/o related.
+ *  ViewModel que gestiona l'estat de les operacions d'entrada/sortida (I/O).
  */
 open class IOViewModel : ViewModel() {
-
+    /** Estat actual mutable **/
     private val _uiState = MutableStateFlow(IOUiState())
+    /** Variable de consulta per a la IU **/
     val uiIOState: StateFlow<IOUiState> = _uiState.asStateFlow()
 
     fun setGoodResult(goodResult: Boolean) {

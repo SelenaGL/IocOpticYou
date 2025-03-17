@@ -28,10 +28,10 @@ import com.example.opticyou.ui.theme.OpticYouTheme
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 /**
- * Composable that displays the list of of app options as buttons
- * [options] map between button text and parameter to pass to onOptionClicked function
- * [onOptionClicked] lambda that triggers a button action
- * [onLogoutClicked] lambda that triggers the logout action
+ * Composable que mostra el menú d'opcions per als usuaris.
+ * @param options Mapa que associa els textos dels botons amb els valors corresponents.
+ * @param onOptionClicked Lambda que es crida quan es selecciona una opció.
+ * @param onLogoutClicked Lambda que es crida quan es fa clic a "Logout".
  */
 @Composable
 fun MenuUserScreen(
@@ -39,11 +39,9 @@ fun MenuUserScreen(
     options: Map<String, String>,
     onOptionClicked: (String) -> Unit = {},
     onLogoutClicked: (MenuUserViewModel, Context) -> Unit = { viewModel, context ->
-        // Accedeix a SharedPreferences amb el context actual
+        // Obtenim el token de la sessió
         val sharedPreferences = context.getSharedPreferences("token", Context.MODE_PRIVATE)
         sharedPreferences.edit().remove("session_token").apply()
-        // Aquí pots afegir la navegació cap a la pantalla de login, per exemple:
-        // navController.navigate(Screens.Login.name) { popUpTo(0) }
     }
 ) {
     val viewModel:MenuUserViewModel = viewModel()

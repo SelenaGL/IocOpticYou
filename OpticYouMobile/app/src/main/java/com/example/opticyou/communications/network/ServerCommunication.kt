@@ -1,6 +1,5 @@
 package com.example.opticyou.communications.network
 
-import com.example.opticyou.data.User
 import com.example.opticyou.data.LoginRequest
 import com.example.opticyou.data.LoginResponse
 import kotlinx.coroutines.Dispatchers
@@ -13,7 +12,13 @@ import retrofit2.awaitResponse
 
 object ServerCommunication {
 
-    // Mètode per a fer login (real o mock si el servidor no està llest)
+    /**
+     * Mètode pel procés de login d'un usuari.
+     *
+     * @param username Nom d'usuari.
+     * @param password Contrasenya de l'usuari.
+     * @return [LoginResponse] si la petició és exitosa, `null` en cas contrari.
+     */
     suspend fun login(username: String, password: String): LoginResponse? {
         println("Enviant petició de login amb $username - $password")
         return withContext(Dispatchers.IO) {
@@ -22,7 +27,11 @@ object ServerCommunication {
                 val response =
                     RetrofitClient.instance.login(LoginRequest(username, password)).awaitResponse()
                 println("Resposta del servidor: ${response.code()} - ${response.message()}")
-                println("Contingut de la resposta: ${response.body()?.toString() ?: "Resposta buida"}")
+                println(
+                    "Contingut de la resposta: ${
+                        response.body()?.toString() ?: "Resposta buida"
+                    }"
+                )
 
                 if (response.isSuccessful) {
                     val body = response.body()
@@ -38,8 +47,13 @@ object ServerCommunication {
         }
     }
 
-
-    // Simulació de login quan el servidor no està disponible
+    /**
+     * Simulació de login quan el servidor no està disponible.
+     *
+     * @param username Nom d'usuari.
+     * @param password Contrasenya de l'usuari.
+     * @return [LoginResponse] simulada.
+     */
     private fun mockLogin(username: String, password: String): LoginResponse {
         // Si el username no conté un "@", considerem que no és vàlid
         if (!username.contains("@")) {
@@ -61,50 +75,12 @@ object ServerCommunication {
         }
     }
 
-    suspend fun queryUser(username: String): User? {
-        return withContext(Dispatchers.IO) {
-            try {
-                val response = RetrofitClient.instance.getUser(username).awaitResponse()
-                if (response.isSuccessful) response.body() else null
-            } catch (e: Exception) {
-                println("Error al recuperar usuari. Retornant mock.")
-                mockQueryUser(username)
-            }
-        }
-    }
-
-    // 🔹 Simulació de resposta per obtenir usuaris si el servidor no està disponible
-    private fun mockQueryUser(username: String): User? {
-        return when (username) {
-            "admin@optica.cat" -> User("admin@optica.cat", "Administrador Mock")
-            "user@optica.cat" -> User("user@optica.cat", "Usuari Mock")
-            "100" -> null // Simulem "usuari inexistent"
-            "200" -> throw Exception("Error en les comunicacions") // 🔥 Simulem un error de xarxa
-            else -> User(username, "Usuari Fictici")
-        }
-    }
-
-    suspend fun listUsers(): List<User>? {
-        return withContext(Dispatchers.IO) {
-            try {
-                val response = RetrofitClient.instance.getAllUsers().awaitResponse()
-                if (response.isSuccessful) response.body() else null
-            } catch (e: Exception) {
-                println("Error al llistar usuaris. Retornant mock.")
-                mockListUsers()
-            }
-        }
-    }
-
-    private fun mockListUsers(): List<User> {
-        return listOf(
-            User("admin@optica.cat", "Administrador Mock"),
-            User("user@optica.cat", "Usuari Mock"),
-            User("nou@optica.cat", "Nou Usuari Mock")
-        )
-    }
-
-
+    /**
+     * Realitza el procés de logout d'un usuari.
+     *
+     * @param token Token d'autenticació de l'usuari.
+     * @return `true` si la petició és exitosa, `false` en cas contrari.
+     */
     suspend fun logout(token: String? = null): Boolean = withContext(Dispatchers.IO) {
         if (token == null) {
             println("No hi ha token")
@@ -122,5 +98,35 @@ object ServerCommunication {
         }
     }
 
+    /**
+     * Simulació del procés de logout quan el servidor no està disponible.
+     *
+     * @return `true` per defecte.
+     */
     private fun mockLogout(): Boolean = true
+
+//    suspend fun queryUser(username: String): User? {
+//        return withContext(Dispatchers.IO) {
+//            try {
+//                val response = RetrofitClient.instance.getUser(username).awaitResponse()
+//                if (response.isSuccessful) response.body() else null
+//            } catch (e: Exception) {
+//                println("Error al recuperar usuari. Retornant mock.")
+//                mockQueryUser(username)
+//            }
+//        }
+//    }
+//
+//    suspend fun listUsers(): List<User>? {
+//        return withContext(Dispatchers.IO) {
+//            try {
+//                val response = RetrofitClient.instance.getAllUsers().awaitResponse()
+//                if (response.isSuccessful) response.body() else null
+//            } catch (e: Exception) {
+//                println("Error al llistar usuaris. Retornant mock.")
+//                mockListUsers()
+//            }
+//        }
+//    }
+//
 }

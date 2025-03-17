@@ -1,7 +1,7 @@
 package com.example.opticyou.data
 
 /**
- * Data class to save the server response (login success and role)
+ * * Classe de dades que representa la resposta del servidor després d'un intent de login.
  */
 data class LoginResponse(
     val success: Boolean,

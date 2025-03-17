@@ -2,10 +2,11 @@
 package com.example.opticyou.data
 
 /**
- * Data class that represents the current UI state in terms of the fact if it has been the login tried
+ * * Classe de dades que representa l'estat actual de la IU en relació amb el procés de login.
  */
 data class LoginUiState(
-    /** Has the login been tried? **/
+    /**  Intent fer login. Per defecte és `false` **/
     var loginTried:Boolean=false,
+    /**  Resultat de login correcte. Per defecte és `false` **/
     val goodResult: Boolean=false
 )

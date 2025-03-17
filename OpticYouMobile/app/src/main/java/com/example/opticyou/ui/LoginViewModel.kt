@@ -15,7 +15,7 @@ import kotlinx.coroutines.withContext
 
 
 /**
- * Conté el mètode per iniciar sessió al servidor i obté el resultat.
+ * ViewModel que gestiona el procés d'inici de sessió.
  *
  */
 class LoginViewModel(
@@ -36,7 +36,11 @@ class LoginViewModel(
     }
 
     /**
-     * Inici de sessió al serviro
+     * Realitza el procés de login.
+     *
+     * @param username Nom d'usuari.
+     * @param password Contrasenya.
+     * @param onSuccess Resultat que es crida si el login és correcte.
      */
     fun doLogin(username: String, password: String, onSuccess: (LoginResponse) -> Unit) {
         println("doLogin() cridat amb: $username - $password")  // Debug log

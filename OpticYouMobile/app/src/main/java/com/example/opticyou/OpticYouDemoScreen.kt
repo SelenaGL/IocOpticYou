@@ -1,6 +1,8 @@
 package com.example.opticyou
 
 import android.annotation.SuppressLint
+import android.content.Context
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,7 +16,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -35,13 +36,11 @@ import com.example.opticyou.R.dimen
 import com.example.opticyou.R.string
 import com.example.opticyou.data.DataSourceAdmin
 import com.example.opticyou.data.DataSourceUser
-//import com.example.opticyou.ui.AddScreen
 import com.example.opticyou.ui.LoginScreen
 import com.example.opticyou.ui.MenuAdminScreen
 import com.example.opticyou.ui.MenuUserScreen
 
-//import com.example.opticyou.ui.QueryScreen
-//import com.example.opticyou.ui.UsersListScreen
+
 
 
 enum class Screens(val title: String) {
@@ -54,7 +53,7 @@ enum class Screens(val title: String) {
 }
 
 /**
- * Composable that displays the topBar and displays back button if back navigation is possible.
+ * Composable que mostra la barra superior de l'aplicació amb el logotip i el botó de retrocés.
  */
 @Composable
 fun OpticYouDemoAppBar(
@@ -64,32 +63,32 @@ fun OpticYouDemoAppBar(
     modifier: Modifier = Modifier
 ) {
     CenterAlignedTopAppBar(
+        modifier = Modifier,
         title = {
             Image(
                 painter = painterResource(id = R.drawable.logo1def),
                 contentDescription = "Logo",
-                modifier = Modifier.size(200.dp)
+                modifier = Modifier.size(180.dp)
             )
         },
         colors = TopAppBarDefaults.mediumTopAppBarColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer
         ),
-        modifier = modifier,
         navigationIcon = {
             if (canNavigateBack) {
                 IconButton(onClick = navigateUp) {
                     Icon(
                         imageVector = Icons.Filled.ArrowBack,
-                        contentDescription = stringResource(R.string.back_button)
+                        contentDescription = stringResource(string.back_button)
                     )
                 }
             }
-        }
+        },
     )
 }
 
-/*
-    App screen. It shows AppBar and, down of it, the other screens
+/**
+ * Composable principal de l'aplicació, que gestiona la navegació entre pantalles.
  */
 
 @Preview
@@ -99,15 +98,35 @@ fun OpticYouDemoApp(
 
     navController: NavHostController = rememberNavController()
 ) {
+    val context = LocalContext.current
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentScreen = Screens.valueOf(
         backStackEntry?.destination?.route ?: Screens.Login.name
     )
+
+    // Botó de retrocés en els menús
+    BackHandler(enabled = true) {
+        if (currentScreen == Screens.Login) {
+            // Si anem enrere a la pantalla de login, es fa logout complet (elimina token i torna a login)
+
+            val sharedPreferences = context.getSharedPreferences("token", Context.MODE_PRIVATE)
+            val token = sharedPreferences.getString("session_token", "null")
+            println("Token sessió: $token")
+            sharedPreferences.edit().remove("session_token").apply()
+            println("Token després de clicar enrere: $token")
+            navController.navigate(Screens.Login.name) {
+                popUpTo(0)
+            }
+        } else {
+            // Per a altres pantalles, només navega enrere sense eliminar el token de la sessió
+            navController.navigateUp()
+        }
+    }
     Scaffold(
         topBar = {
             OpticYouDemoAppBar(
                 currentScreen = currentScreen,
-                canNavigateBack = navController.previousBackStackEntry != null,
+                canNavigateBack = true,
                 navigateUp = { navController.navigateUp() }
             )
         }
@@ -124,14 +143,14 @@ fun OpticYouDemoApp(
                             println("Rol: ${loginResponse.rol}")
                             when (loginResponse.rol.trim().lowercase()) {
                                 "admin" -> {
-                                    println("Navegant a Screens.AdminMenu")
+                                    println("Navegant a AdminMenu")
                                     navController.navigate(Screens.AdminMenu.name) {
                                         popUpTo(navController.graph.startDestinationId) { inclusive = true }
                                         launchSingleTop = true
                                     }
                                 }
                                 "client" -> {
-                                    println("Navegant a Screens.UserMenu")
+                                    println("Navegant a UserMenu")
                                     navController.navigate(Screens.UserMenu.name) {
                                         popUpTo(navController.graph.startDestinationId) { inclusive = true }
                                         launchSingleTop = true
@@ -185,8 +204,6 @@ fun OpticYouDemoApp(
                             popUpTo(Screens.AdminMenu.name) { inclusive = true }
                             launchSingleTop = true
                         }
-
-
                     },
                     options = DataSourceAdmin.options,
                     modifier = Modifier.fillMaxHeight()

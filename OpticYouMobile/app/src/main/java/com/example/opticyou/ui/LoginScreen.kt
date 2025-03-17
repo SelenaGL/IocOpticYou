@@ -35,7 +35,11 @@ import com.example.opticyou.data.LoginResponse
 import com.example.opticyou.ui.theme.OpticYouTheme
 
 /**
- * Composable that allows the user to open the session. It's the first app screen
+ * Composable que permet als usuaris iniciar sessió a l'aplicació.
+ *
+ * @param navigate Funció de navegació quan el login és correcte.
+ * @param viewModel ViewModel de la pantalla de login.
+ * @param modifier
  */
 @Composable
 fun LoginScreen(

@@ -1,41 +1,52 @@
 package com.example.opticyou.communications
 
-import com.example.opticyou.communications.network.RetrofitClient
 import com.example.opticyou.communications.network.ServerCommunication
-import com.example.opticyou.data.LoginRequest
 import com.example.opticyou.data.LoginResponse
-import com.example.opticyou.data.User
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import kotlinx.coroutines.withContext
-import retrofit2.awaitResponse
+
 
 /**
- * Object with functions for calling the server.
+ * Objecte que proporciona funcions per realitzar crides al servidor.
  * Fa de pont perquè ServerCommunication gestioni tota la communicació
  */
 
 object ServerRequests {
 
-    // A mutex is used to ensure that reads and writes are thread-safe.
+    /**
+     * Mutex per garantir que les lectures i escriptures siguin segures en fils concurrents.
+     */
     private val accessMutex = Mutex()
 
+    /**
+     * Realitza el procés de login d'un usuari.
+     *
+     * @param username Nom d'usuari.
+     * @param password Contrasenya de l'usuari.
+     * @return [LoginResponse] si la petició és exitosa, `null` en cas contrari.
+     */
     open suspend fun login(username: String, password: String): LoginResponse? = accessMutex.withLock {
         return ServerCommunication.login(username, password)
     }
 
-    suspend fun queryUser(username: String): User? = accessMutex.withLock {
-        return ServerCommunication.queryUser(username)
-    }
-
-    suspend fun listUsers(): List<User>? = accessMutex.withLock {
-        return ServerCommunication.listUsers()
-    }
+    /**
+     * Realitza el procés de logout d'un usuari.
+     *
+     * @param token Token d'autenticació de la sessió (opcional).
+     * @return `true` si la petició és exitosa o `false` en cas contrari.
+     */
 
     suspend fun logout(token: String? = null): Boolean = accessMutex.withLock {
         return ServerCommunication.logout(token)
     }
+
+//    suspend fun queryUser(username: String): User? = accessMutex.withLock {
+//        return ServerCommunication.queryUser(username)
+//    }
+//
+//    suspend fun listUsers(): List<User>? = accessMutex.withLock {
+//        return ServerCommunication.listUsers()
+//    }
 
 //    suspend fun isLogged():Boolean = accessMutex.withLock {
 //        return CommController.isLogged

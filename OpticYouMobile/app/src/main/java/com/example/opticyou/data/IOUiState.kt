@@ -1,7 +1,7 @@
 package com.example.opticyou.data
 
 /**
- * Data class that represents the current UI state in terms of the connection success
+ * Classe de dades que representa l'estat actual de la IU en termes d'èxit de la connexió
  */
 data class IOUiState(
     /** good result **/
