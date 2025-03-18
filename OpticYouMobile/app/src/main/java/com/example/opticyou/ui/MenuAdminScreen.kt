@@ -51,7 +51,9 @@ fun MenuAdminScreen(
 
 
     Box(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .testTag("adminMenu")
     ) {
         Column(
             modifier = Modifier
@@ -61,8 +63,7 @@ fun MenuAdminScreen(
         ) {
             // Títol
             Text(stringResource(R.string.admin_welcome),
-                fontSize = 25.sp,
-                modifier = Modifier.testTag("adminMenu"))
+                fontSize = 25.sp)
             Spacer(modifier = Modifier.height(16.dp))
 
             // Mostra cada opció en una fila independent

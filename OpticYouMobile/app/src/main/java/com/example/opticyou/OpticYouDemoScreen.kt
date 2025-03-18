@@ -39,6 +39,7 @@ import com.example.opticyou.data.DataSourceUser
 import com.example.opticyou.ui.LoginScreen
 import com.example.opticyou.ui.MenuAdminScreen
 import com.example.opticyou.ui.MenuUserScreen
+import androidx.activity.compose.BackHandler
 
 
 
@@ -106,14 +107,15 @@ fun OpticYouDemoApp(
 
     // Botó de retrocés en els menús
     BackHandler(enabled = true) {
-        if (currentScreen == Screens.Login) {
+        if (currentScreen == Screens.AdminMenu || currentScreen == Screens.UserMenu) {
             // Si anem enrere a la pantalla de login, es fa logout complet (elimina token i torna a login)
-
             val sharedPreferences = context.getSharedPreferences("token", Context.MODE_PRIVATE)
-            val token = sharedPreferences.getString("session_token", "null")
-            println("Token sessió: $token")
-            sharedPreferences.edit().remove("session_token").apply()
-            println("Token després de clicar enrere: $token")
+            val tokenPrevi = sharedPreferences.getString("session_token", "null")
+            println("Token sessió: $tokenPrevi")
+            sharedPreferences.edit().remove("session_token").commit()
+            // Tornem a llegir el token després de l'eliminació
+            val tokenDespres = sharedPreferences.getString("session_token", "null")
+            println("Token després de clicar enrere: $tokenDespres")
             navController.navigate(Screens.Login.name) {
                 popUpTo(0)
             }

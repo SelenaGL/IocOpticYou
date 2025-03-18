@@ -50,7 +50,9 @@ fun MenuUserScreen(
     val token = sharedPreferences.getString("session_token", null)
 
     Box(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .testTag("userMenu")
     ) {
         Column(
             modifier = Modifier
@@ -60,8 +62,7 @@ fun MenuUserScreen(
         ) {
             // Títol
             Text(stringResource(R.string.user_welcome),
-                fontSize = 25.sp,
-                modifier = Modifier.testTag("userMenu"))
+                fontSize = 25.sp)
             Spacer(modifier = Modifier.height(16.dp))
 
             // Mostra cada opció en una fila independent

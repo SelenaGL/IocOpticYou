@@ -50,7 +50,7 @@ class LoginIntegrationTests {
      */
     @Test
     fun loginToken() = runTest {
-        //En aquest cas provem amb el toke d'Admin
+        //En aquest cas simulem amb el token d'Admin
         val response = LoginResponse(success = true, token = "mockTokenAdmin", rol = "admin")
         assertEquals("mockTokenAdmin", response.token)
     }

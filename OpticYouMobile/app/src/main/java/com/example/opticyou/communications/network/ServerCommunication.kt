@@ -41,39 +41,40 @@ object ServerCommunication {
                 }
             } catch (e: Exception) {
                 println("Excepció de connexió: ${e.message}")
-                println("Retornant mock data.")
-                mockLogin(username, password) // Retornem un mock si el servidor no està disponible
+                null
+                //println("Retornant mock data.")
+                //mockLogin(username, password) // Retornem un mock si el servidor no està disponible
             }
         }
     }
 
-    /**
-     * Simulació de login quan el servidor no està disponible.
-     *
-     * @param username Nom d'usuari.
-     * @param password Contrasenya de l'usuari.
-     * @return [LoginResponse] simulada.
-     */
-    private fun mockLogin(username: String, password: String): LoginResponse {
-        // Si el username no conté un "@", considerem que no és vàlid
-        if (!username.contains("@")) {
-            return LoginResponse(success = false, token = "", rol = "")
-        }
-        // Admin
-        if (username == "admin@optica.cat") {
-            return if (password == "1234") {
-                LoginResponse(success = true, rol = "admin", token = "mockAdminToken")
-            } else {
-                LoginResponse(success = false, token = "", rol = "")
-            }
-        }
-        // Usuari
-        return if (password == "1234") {
-            LoginResponse(success = true, rol = "user", token = "mockUserToken")
-        } else {
-            LoginResponse(success = false, token = "", rol = "")
-        }
-    }
+//    /**
+//     * Simulació de login quan el servidor no està disponible.
+//     *
+//     * @param username Nom d'usuari.
+//     * @param password Contrasenya de l'usuari.
+//     * @return [LoginResponse] simulada.
+//     */
+//    private fun mockLogin(username: String, password: String): LoginResponse {
+//        // Si el username no conté un "@", considerem que no és vàlid
+//        if (!username.contains("@")) {
+//            return LoginResponse(success = false, token = "", rol = "")
+//        }
+//        // Admin
+//        if (username == "admin@optica.cat") {
+//            return if (password == "1234") {
+//                LoginResponse(success = true, rol = "admin", token = "mockAdminToken")
+//            } else {
+//                LoginResponse(success = false, token = "", rol = "")
+//            }
+//        }
+//        // Usuari
+//        return if (password == "1234") {
+//            LoginResponse(success = true, rol = "user", token = "mockUserToken")
+//        } else {
+//            LoginResponse(success = false, token = "", rol = "")
+//        }
+//    }
 
     /**
      * Realitza el procés de logout d'un usuari.
@@ -93,17 +94,18 @@ object ServerCommunication {
             response.isSuccessful
         } catch (e: Exception) {
             println("Error en logout: ${e.message}")
-            println("Retornant mock data.")
-            mockLogout()
+            false
+//            println("Retornant mock data.")
+//            mockLogout()
         }
     }
 
-    /**
-     * Simulació del procés de logout quan el servidor no està disponible.
-     *
-     * @return `true` per defecte.
-     */
-    private fun mockLogout(): Boolean = true
+//    /**
+//     * Simulació del procés de logout quan el servidor no està disponible.
+//     *
+//     * @return `true` per defecte.
+//     */
+//    private fun mockLogout(): Boolean = true
 
 //    suspend fun queryUser(username: String): User? {
 //        return withContext(Dispatchers.IO) {
