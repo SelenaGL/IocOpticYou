@@ -21,13 +21,7 @@ import org.junit.After
 import org.junit.Before
 
 /**
- * Proves unitàries (sense UI) per provar el login a l'aplicació
- *
- * Comprovarem:
- * - Inici de sessió amb credencials correctes d'admin i d'usuari
- * - Inici de sessió fallida
- * - Sortida de la sessió
- * - Comportament del LoginViewModel amb credencial correctes i incorrectes
+ * Proves unitàries (sense IU ni connexió al servidor) per provar el login a l'aplicació
  */
 
 class LoginUnitTests {
@@ -59,10 +53,11 @@ class LoginUnitTests {
         // El login hauria de fallar perquè el username no és un email
         assertFalse("El login hauria de fallar si el username no és un email", response!!.success)
         assertEquals("", response.rol)
+        assertEquals("", response.token)
     }
 
     /**
-     * Prova que l'inici de sessió amb credencials d'admin retorna una resposta d'èxit amb el rol "admin".
+     * Prova que l'inici de sessió amb credencials d'admin retorna una resposta correcte amb el rol "admin".
      */
     @Test
     fun loginAdmin() = runBlocking {
@@ -71,6 +66,7 @@ class LoginUnitTests {
         assertNotNull("La resposta no pot ser null", response)
         assertTrue(response!!.success)
         assertEquals("admin", response.rol)
+        assertEquals("mockTokenAdmin", response.token)
     }
 
     /**
@@ -83,6 +79,7 @@ class LoginUnitTests {
         assertNotNull("La resposta no pot ser null", response)
         assertTrue(response!!.success)
         assertEquals("user", response.rol)
+        assertEquals("mockTokenUser", response.token)
     }
 
     /**

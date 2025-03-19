@@ -9,8 +9,15 @@ import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
+/**
+ * Proves d'integració per verificar el login i el logout en un servidor real
+ */
+
 class LoginIntegrationServerTests {
 
+    /**
+     * Prova el login amb credencials d'administrador en un servidor real.
+     */
     @Test
     fun loginAdminRealServer() = runBlocking {
         // Configura Retrofit per apuntar al servidor
@@ -26,6 +33,9 @@ class LoginIntegrationServerTests {
         assertTrue("El token no hauria d'estar buit", response.token.isNotEmpty())
     }
 
+    /**
+     * Prova el login amb credencials d'usuari client en un servidor real.
+     */
     @Test
     fun loginUserRealServer() = runBlocking {
         RetrofitClient.setBaseUrlForTesting("http://10.0.2.2:8083/")
@@ -40,7 +50,9 @@ class LoginIntegrationServerTests {
         assertTrue("El token no hauria d'estar buit", response.token.isNotEmpty())
     }
 
-
+    /**
+     * Prova el login amb un email invàlid en un servidor real.
+     */
     @Test
     fun loginWrongEmailRealServer() = runBlocking {
         RetrofitClient.setBaseUrlForTesting("http://10.0.2.2:8083/")
@@ -51,6 +63,9 @@ class LoginIntegrationServerTests {
         assertNull("La resposta serà null", response)
     }
 
+    /**
+     * Prova el login amb una contrasenya incorrecte en un servidor real.
+     */
     @Test
     fun loginWrongPasswRealServer() = runBlocking {
         RetrofitClient.setBaseUrlForTesting("http://10.0.2.2:8083/")
@@ -61,14 +76,17 @@ class LoginIntegrationServerTests {
         assertNull("La resposta serà null", response)
     }
 
+    /**
+     * Prova el procés de logout en un servidor real.
+     */
     @Test
     fun logoutWithRealServer() = runBlocking {
         RetrofitClient.setBaseUrlForTesting("http://10.0.2.2:8083/")
 
         // Cridem logout
-        val result = ServerRequests.logout("realToken")
-        println("Resultat de logout amb servidor real: $result")
-        assertTrue("Logout OK amb el servidor real actiu", result)
+        val response = ServerRequests.logout("realToken")
+        println("Resultat de logout amb servidor real: $response")
+        assertTrue("Logout OK amb el servidor real actiu", response)
     }
 
 }

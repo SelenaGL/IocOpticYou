@@ -8,9 +8,6 @@ import org.junit.Test
 
 /**
  * Proves d'integració per validar la lògica de navegació de pantalles en funció del login del rol: objecte LoginReponse
- * - Usuari amb rol "admin" va a la pantalla AdminMenu
- * - Usuari amb rol "user" va a la pantalla UserMenu
- *
  */
 
 class LoginIntegrationTests {
@@ -46,7 +43,7 @@ class LoginIntegrationTests {
     }
 
     /**
-     * Prova que un token es rep correctament per un usuari autenticat.
+     * Prova que el token es rep correctament
      */
     @Test
     fun loginToken() = runTest {
