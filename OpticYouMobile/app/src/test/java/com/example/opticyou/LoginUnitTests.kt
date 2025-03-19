@@ -103,52 +103,6 @@ class LoginUnitTests {
         val response = ServerRequests.logout()
         assertTrue("Logout hauria de ser true quan no hi ha sessió activa", response)
     }
-
-    /**
-     * Prova que el LoginViewModel gestiona correctament les credencials vàlides.
-     * Crida el callback amb una resposta exitosa i estat del ViewModel mostra que s'ha intentat el login i que el resultat és bo.
-     */
-    @Test
-    fun loginViewModel_CorrectCredentials() = runTest {
-        val viewModel = LoginViewModel(ioDispatcher = testDispatcher, mainDispatcher = testDispatcher)
-        coEvery { ServerRequests.login("admin@optica.cat", "1234") } returns LoginResponse(true, "mockTokenAdmin", "admin")
-        var callbackCalled = false
-        val callback: (LoginResponse) -> Unit = { response ->
-            callbackCalled = true
-            assertTrue("Resposta exitosa amb credencials correctes", response.success)
-        }
-
-        viewModel.doLogin("admin@optica.cat", "1234", callback)
-
-        // Avança el dispatcher per processar totes les coroutines pendents
-        testDispatcher.scheduler.advanceUntilIdle()
-
-        assertTrue("El callback hauria d'haver estat cridat", callbackCalled)
-        assertTrue("loginTried hauria de ser true", viewModel.uiState.value.loginTried)
-        assertTrue("goodResult hauria de ser true per credencials vàlides", viewModel.uiState.value.goodResult)
-    }
-
-    /**
-     * Prova que el LoginViewModel gestiona correctament les credencials incorrectes.
-     * Crida el callback amb una resposta fallida i estat del ViewModel mostra que s'ha intentat el login, pero el resultat és no bo.
-     */
-    @Test
-    fun loginViewModel_IncorrectCredentials() = runTest {
-        val viewModel = LoginViewModel(ioDispatcher = testDispatcher, mainDispatcher = testDispatcher)
-        coEvery { ServerRequests.login("admin@optica.cat", "wrong") } returns LoginResponse(false, "", "")
-        var callbackCalled = false
-        val callback: (LoginResponse) -> Unit = { response ->
-            callbackCalled = true
-            assertFalse("Resposta fallida amb credencials incorrectes", response.success)
-        }
-        viewModel.doLogin("admin@optica.cat", "wrong", callback)
-
-        testDispatcher.scheduler.advanceUntilIdle()
-
-        assertTrue("El callback hauria d'haver estat cridat", callbackCalled)
-        assertTrue("loginTried hauria de ser true", viewModel.uiState.value.loginTried)
-        assertFalse("goodResult hauria de ser false per credencials incorrectes", viewModel.uiState.value.goodResult)
-    }
 }
 
 
