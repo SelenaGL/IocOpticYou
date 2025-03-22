@@ -8,9 +8,6 @@
       <SelectionState runConfigName="LoginUiTests">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="loginUser_UserMenu()">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
       <SelectionState runConfigName="LoginIntegrationTests">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
