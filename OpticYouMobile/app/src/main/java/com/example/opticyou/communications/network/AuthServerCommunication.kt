@@ -10,7 +10,7 @@ import retrofit2.awaitResponse
  * Gestiona tota la comunicació amb el servidor
  */
 
-object ServerCommunication {
+object AuthServerCommunication {
 
     /**
      * Mètode pel procés de login d'un usuari.

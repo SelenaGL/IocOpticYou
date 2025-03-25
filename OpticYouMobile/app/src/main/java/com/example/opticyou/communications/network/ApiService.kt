@@ -36,17 +36,45 @@ interface ApiService {
     @POST("auth/logout-string")
     fun logoutString(@Body jwt: String): Call<Boolean>
 
+    /**
+     * Obté la llista de centres.
+     *
+     * @param token Token d'autenticació inclòs a la petició.
+     * @return [List] de [Center] que conté els centres registrats.
+     */
     @GET("centres")
-    fun getCentres(@Header("Authorization") token: String): Call<List<Center>>
+    fun getCentres(token: String): Call<List<Center>>
 
+    /**
+     * Afegeix un nou centre.
+     *
+     * @param token Token d'autenticació inclòs a la petició.
+     * @param centre Objecte [Center] amb la informació del centre a afegir.
+     * @return Objecte [Center] amb les dades del centre afegit.
+     */
     @POST("centres")
-    fun addCentre(@Header("Authorization") token: String, @Body centre: Center): Call<Center>
+    fun addCentre(token: String, @Body centre: Center): Call<Center>
 
-    @PUT("centres/{id}")
-    fun updateCentre(@Header("Authorization") token: String, @Path("id") id: Int, @Body centre: Center): Call<Center>
+    /**
+     * Actualitza les dades d'un centre existent.
+     *
+     * @param token Token d'autenticació inclòs a la petició.
+     * @param idclinica Identificador del centre a actualitzar.
+     * @param centre Objecte [Center] amb les noves dades.
+     * @return Objecte [Center] amb les dades actualitzades.
+     */
+    @PUT("centres/{idclinica}")
+    fun updateCentre(token: String, @Path("idclinica") id: Int, @Body centre: Center): Call<Center>
 
-    @DELETE("centres/{id}")
-    fun deleteCentre(@Header("Authorization") token: String, @Path("id") id: Int): Call<Void>
+    /**
+     * Elimina un centre.
+     *
+     * @param token Token d'autenticació inclòs a la petició.
+     * @param idclinica Identificador del centre a eliminar.
+     * @return [Call] de tipus [Void] que indica la realització de l'operació.
+     */
+    @DELETE("centres/{idclinica}")
+    fun deleteCentre(token: String, @Path("idclinica") id: Int): Call<Void>
 
 //    @GET("usuari/all")
 //    fun getAllUsers(): Call<List<User>>

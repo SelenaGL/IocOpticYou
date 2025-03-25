@@ -1,6 +1,6 @@
 package com.example.opticyou.communications
 
-import com.example.opticyou.communications.network.ServerCommunication
+import com.example.opticyou.communications.network.AuthServerCommunication
 import com.example.opticyou.data.LoginResponse
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -8,7 +8,7 @@ import kotlinx.coroutines.sync.withLock
 
 /**
  * Objecte que proporciona funcions per realitzar crides al servidor.
- * Fa de pont perquè ServerCommunication gestioni tota la communicació
+ * Fa de pont perquè AuthServerCommunication gestioni tota la communicació
  */
 
 object ServerRequests {
@@ -26,7 +26,7 @@ object ServerRequests {
      * @return [LoginResponse] si la petició és exitosa, `null` en cas contrari.
      */
     open suspend fun login(username: String, password: String): LoginResponse? = accessMutex.withLock {
-        return ServerCommunication.login(username, password)
+        return AuthServerCommunication.login(username, password)
     }
 
     /**
@@ -37,7 +37,7 @@ object ServerRequests {
      */
 
     suspend fun logout(token: String? = null): Boolean = accessMutex.withLock {
-        return ServerCommunication.logout(token)
+        return AuthServerCommunication.logout(token)
     }
 
 //    suspend fun queryUser(username: String): User? = accessMutex.withLock {

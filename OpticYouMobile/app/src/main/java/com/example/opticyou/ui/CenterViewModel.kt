@@ -7,6 +7,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
+
+/**
+ * ViewModel que gestiona les operacions relacionades amb els centres.
+ */
 class CenterViewModel:IOViewModel () {
 
     // Llista de centres gestionada com a StateFlow
@@ -16,14 +20,20 @@ class CenterViewModel:IOViewModel () {
     // Variable per guardar el token d'autenticació
     private var authToken: String? = null
 
-    // Funció per establir el token (es pot cridar des d'una pantalla d'autenticació o des d'un ViewModel global)
+    /**
+     * Funció per establir el token per a les peticions al servidor.
+     *
+     * @param token Token d'autenticació obtingut després de l'inici de sessió.
+     */
     fun setAuthToken(token: String) {
         authToken = token
     }
 
-    // Carrega la llista de centres des del servidor
+    /**
+     * Carrega la llista de centres des del servidor.
+     */
     fun loadCentres() {
-        val token = authToken ?: return
+        val token = authToken ?: return //Si el token d'autenticació no està establert, la funció no realitza cap operació.
         viewModelScope.launch {
             val centresFromServer = CenterServerCommunication.getCentres(token)
             if (centresFromServer != null) {
@@ -32,39 +42,66 @@ class CenterViewModel:IOViewModel () {
         }
     }
 
-    // Afegeix un nou centre
-    fun addCentre(name: String, address: String) {
+    /**
+     * Afegeix un nou centre al servidor.
+     *
+     * @param name Nom del centre a afegir.
+     * @param address Adreça del centre a afegir.
+     */
+    fun addCentre(nom: String,
+                  direccio: String,
+                  telefon: String,
+                  horariObertura: String,
+                  horariTancament: String,
+                  email: String
+    ) {
         val token = authToken ?: return
         viewModelScope.launch {
-            // L'id es pot establir a 0 perquè el servidor pot assignar-ne un
-            val newCentre = Center(id = 0, name = name, address = address)
-            val addedCentre = CenterServerCommunication.addCentre(token, newCentre)
+            // L'id inicialmente s'estableix a 0 perquè el servidor li assignarà un
+            val newCenter = Center(
+                idclinica = 0,
+                nom = nom,
+                direccio = direccio,
+                telefon = telefon,
+                horari_opertura = horariObertura,
+                horari_tancament = horariTancament,
+                email = email
+            )
+            val addedCentre = CenterServerCommunication.addCentre(token, newCenter)
             addedCentre?.let {
                 _centres.value = _centres.value + it
             }
         }
     }
 
-    // Actualitza un centre existent
+    /**
+     * Actualitza les dades d'un centre existent.
+     *
+     * @param updatedCentre Centre amb les dades actualitzades.
+     */
     fun updateCentre(updatedCentre: Center) {
         val token = authToken ?: return
         viewModelScope.launch {
             val centre = CenterServerCommunication.updateCentre(token, updatedCentre)
             centre?.let {
                 _centres.value = _centres.value.map { current ->
-                    if (current.id == it.id) it else current
+                    if (current.idclinica == it.idclinica) it else current
                 }
             }
         }
     }
 
-    // Elimina un centre
+    /**
+     * Elimina un centre del servidor.
+     *
+     * @param centre Centre que es vol eliminar.
+     */
     fun deleteCentre(centre: Center) {
         val token = authToken ?: return
         viewModelScope.launch {
-            val success = CenterServerCommunication.deleteCentre(token, centre.id)
+            val success = CenterServerCommunication.deleteCentre(token, centre.idclinica)
             if (success) {
-                _centres.value = _centres.value.filter { it.id != centre.id }
+                _centres.value = _centres.value.filter { it.idclinica != centre.idclinica }
             }
         }
     }
