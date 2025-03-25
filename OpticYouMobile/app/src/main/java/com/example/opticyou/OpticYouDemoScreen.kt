@@ -40,14 +40,14 @@ import com.example.opticyou.ui.LoginScreen
 import com.example.opticyou.ui.MenuAdminScreen
 import com.example.opticyou.ui.MenuUserScreen
 import androidx.activity.compose.BackHandler
-
-
+import com.example.opticyou.ui.CenterScreen
 
 
 enum class Screens(val title: String) {
     Login(title = "Inici sessió"),
     UserMenu(title = "Menú Usuari"),
     AdminMenu(title = "Menú Administrador"),
+    Centres(title = "Gestió de Centres"),
     Query(title = "Query"),
     List(title = "List"),
     Add(title = "Add")
@@ -212,18 +212,10 @@ fun OpticYouDemoApp(
                 )
             }
 
-//            composable(route = Screens.List.name) {
-//                UsersListScreen(
-//                    modifier = Modifier.fillMaxHeight()
-//                )
-//            }
-//
-//            composable(route = Screens.Query.name) {
-//                QueryScreen(
-//                    modifier = Modifier.fillMaxHeight()
-//                )
-//
-//            }
+            composable(route = Screens.Centres.name) {
+                CenterScreen(modifier = Modifier.fillMaxHeight())
+            }
+
 //
 //            composable(route = Screens.Add.name) {
 //                AddScreen(
