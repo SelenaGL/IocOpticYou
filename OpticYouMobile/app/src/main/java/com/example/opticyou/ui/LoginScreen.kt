@@ -51,8 +51,7 @@ fun LoginScreen(
     val sharedPreferences = remember {
         context.getSharedPreferences("token", Context.MODE_PRIVATE)
     }
-    //var server by remember {mutableStateOf("")}
-    //var port by remember {mutableStateOf("")}
+
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var showError by remember { mutableStateOf(false) }

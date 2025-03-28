@@ -117,4 +117,10 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest")
     debugImplementation("androidx.compose.ui:ui-tooling")
 
+    // OkHttp
+    implementation("com.squareup.okhttp3:okhttp:4.10.0")
+
+    // Interceptor per loguejar les peticions
+    implementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
+
 }

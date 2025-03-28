@@ -42,8 +42,18 @@ interface ApiService {
      * @param token Token d'autenticació inclòs a la petició.
      * @return [List] de [Center] que conté els centres registrats.
      */
-    @GET("centres")
-    fun getCentres(token: String): Call<List<Center>>
+    @GET("clinica/{token}")
+    fun getAllClinicas(@Path("token") token: String): Call<List<Center>>
+
+    /**
+     * Obté la llista de centres.
+     *
+     * @param token Token d'autenticació inclòs a la petició.
+     * @param id Codi del centre a cercar
+     * @return [Center] de la consulta
+     */
+    @GET("clinica/{id}/{token}")
+    fun getClinicaById(@Path("id") id: Long, @Path("token") token: String): Call<Center>
 
     /**
      * Afegeix un nou centre.
@@ -52,8 +62,8 @@ interface ApiService {
      * @param centre Objecte [Center] amb la informació del centre a afegir.
      * @return Objecte [Center] amb les dades del centre afegit.
      */
-    @POST("centres")
-    fun addCentre(token: String, @Body centre: Center): Call<Center>
+    @POST("clinica")
+    fun createClinica(@Header("Authorization") token: String, @Body center: Center): Call<Void>
 
     /**
      * Actualitza les dades d'un centre existent.
@@ -63,8 +73,8 @@ interface ApiService {
      * @param centre Objecte [Center] amb les noves dades.
      * @return Objecte [Center] amb les dades actualitzades.
      */
-    @PUT("centres/{idclinica}")
-    fun updateCentre(token: String, @Path("idclinica") id: Int, @Body centre: Center): Call<Center>
+    @PUT("clinica/update")
+    fun updateClinica(@Body centre: Center): Call<Center>
 
     /**
      * Elimina un centre.
@@ -73,8 +83,8 @@ interface ApiService {
      * @param idclinica Identificador del centre a eliminar.
      * @return [Call] de tipus [Void] que indica la realització de l'operació.
      */
-    @DELETE("centres/{idclinica}")
-    fun deleteCentre(token: String, @Path("idclinica") id: Int): Call<Void>
+    @DELETE("clinica/{id}/{token}")
+    fun deleteClinica(@Path("id") id: Long,@Path("token") token: String): Call<String>
 
 //    @GET("usuari/all")
 //    fun getAllUsers(): Call<List<User>>

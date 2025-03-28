@@ -1,5 +1,6 @@
 package com.example.opticyou.ui
 
+import android.content.Context
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -21,11 +23,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.opticyou.data.Center
 import com.example.opticyou.data.LoginResponse
-import androidx.compose.foundation.lazy.items
 import androidx.compose.ui.tooling.preview.Preview
 
 
@@ -43,13 +45,19 @@ fun CenterScreen(
     viewModel: CenterViewModel = viewModel()
 ) {
 
+    val context = LocalContext.current
+    // Recuperem el token des de SharedPreferences
+    val sharedPreferences = context.getSharedPreferences("token", Context.MODE_PRIVATE)
+    val storedToken = sharedPreferences.getString("session_token", "") ?: ""
+    viewModel.setAuthToken(storedToken)
+
     // Variables locals per al formulari
     var selectedCenter by remember { mutableStateOf<Center?>(null) }
     var nom by remember { mutableStateOf("") }
     var direccio by remember { mutableStateOf("") }
     var telefon by remember { mutableStateOf("") }
-    var horariObertura by remember { mutableStateOf("") }
-    var horariTancament by remember { mutableStateOf("") }
+    var horari_opertura by remember { mutableStateOf("") }
+    var horari_tancament by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
 
     // Observem la llista de centres des del ViewModel
@@ -89,16 +97,16 @@ fun CenterScreen(
         Spacer(modifier = Modifier.height(8.dp))
 
         OutlinedTextField(
-            value = horariObertura,
-            onValueChange = { horariObertura = it },
+            value = horari_opertura,
+            onValueChange = { horari_opertura = it },
             label = { Text("Horari Obertura") },
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(8.dp))
 
         OutlinedTextField(
-            value = horariTancament,
-            onValueChange = { horariTancament = it },
+            value = horari_tancament,
+            onValueChange = { horari_tancament = it },
             label = { Text("Horari Tancament") },
             modifier = Modifier.fillMaxWidth()
         )
@@ -118,20 +126,20 @@ fun CenterScreen(
         ) {
             Button(
                 onClick = {
-                    viewModel.addCentre(
+                    viewModel.addClinica(
                         nom,
                         direccio,
                         telefon,
-                        horariObertura,
-                        horariTancament,
+                        horari_opertura,
+                        horari_tancament,
                         email
                     )
                     selectedCenter = null
                     nom = ""
                     direccio = ""
                     telefon = ""
-                    horariObertura = ""
-                    horariTancament = ""
+                    horari_opertura = ""
+                    horari_tancament = ""
                     email = ""
                 },
                 modifier = Modifier.weight(1f)
@@ -145,17 +153,17 @@ fun CenterScreen(
                             nom = nom,
                             direccio = direccio,
                             telefon = telefon,
-                            horari_opertura = horariObertura,
-                            horari_tancament = horariTancament,
+                            horari_opertura = horari_opertura,
+                            horari_tancament = horari_tancament,
                             email = email
                         )
-                        viewModel.updateCentre(updatedCenter)
+                        viewModel.updateClinica(updatedCenter)
                         selectedCenter = null
                         nom = ""
                         direccio = ""
                         telefon = ""
-                        horariObertura = ""
-                        horariTancament = ""
+                        horari_opertura = ""
+                        horari_tancament = ""
                         email = ""
                     }
                 },
@@ -169,13 +177,13 @@ fun CenterScreen(
             Button(
                 onClick = {
                     if (selectedCenter != null) {
-                        viewModel.deleteCentre(selectedCenter!!)
+                        //viewModel.deleteClinica(selectedCenter!!)
                         selectedCenter = null
                         nom = ""
                         direccio = ""
                         telefon = ""
-                        horariObertura = ""
-                        horariTancament = ""
+                        horari_opertura = ""
+                        horari_tancament = ""
                         email = ""
                     }
                 },
@@ -184,7 +192,7 @@ fun CenterScreen(
             ) {
                 Text("Baixa")
             }
-            // Botó de consulta per refrescar la llista
+            // Botó de consulta
             Button(
                 onClick = {
                     viewModel.loadCentres()
@@ -208,8 +216,8 @@ fun CenterScreen(
                             nom = center.nom
                             direccio = center.direccio
                             telefon = center.telefon
-                            horariObertura = center.horari_opertura
-                            horariTancament = center.horari_tancament
+                            horari_opertura = center.horari_opertura
+                            horari_tancament = center.horari_tancament
                             email = center.email
                         }
                         .padding(vertical = 8.dp)
