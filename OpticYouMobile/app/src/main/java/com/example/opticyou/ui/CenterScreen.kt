@@ -155,7 +155,8 @@ fun CenterScreen(
                             telefon = telefon,
                             horari_opertura = horari_opertura,
                             horari_tancament = horari_tancament,
-                            email = email
+                            email = email,
+
                         )
                         viewModel.updateClinica(updatedCenter)
                         selectedCenter = null
@@ -165,6 +166,7 @@ fun CenterScreen(
                         horari_opertura = ""
                         horari_tancament = ""
                         email = ""
+
                     }
                 },
                 modifier = Modifier.weight(1f),
@@ -177,7 +179,7 @@ fun CenterScreen(
             Button(
                 onClick = {
                     if (selectedCenter != null) {
-                        //viewModel.deleteClinica(selectedCenter!!)
+                        viewModel.deleteClinica(selectedCenter!!)
                         selectedCenter = null
                         nom = ""
                         direccio = ""

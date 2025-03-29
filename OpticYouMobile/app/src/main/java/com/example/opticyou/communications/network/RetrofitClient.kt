@@ -1,9 +1,11 @@
 package com.example.opticyou.communications.network
 
+import com.google.gson.GsonBuilder
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.converter.scalars.ScalarsConverterFactory
 
 /**
  * Objecte encarregat de la configuració de Retrofit per realitzar peticions al servidor.
@@ -21,6 +23,10 @@ object RetrofitClient {
         .addInterceptor(loggingInterceptor)
         .build()
 
+    // Configura Gson en mode lenient per acceptar JSON mal formatat
+    private val gson = GsonBuilder()
+        .setLenient()
+        .create()
 
     /**
      * Instància única de [ApiService] per realitzar peticions HTTP.
@@ -29,7 +35,8 @@ object RetrofitClient {
         Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(okHttpClient)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(ScalarsConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
             .create(ApiService::class.java)
     }

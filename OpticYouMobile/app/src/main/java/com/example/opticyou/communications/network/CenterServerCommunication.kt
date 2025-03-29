@@ -18,7 +18,8 @@ object CenterServerCommunication {
      */
     suspend fun getCentres(token: String): List<Center>? = withContext(Dispatchers.IO) {
         try {
-            val response = RetrofitClient.instance.getAllClinicas(token).awaitResponse()
+            val bearerToken = "Bearer $token"
+            val response = RetrofitClient.instance.getAllClinicas(bearerToken).awaitResponse()
             if (response.isSuccessful) {
                 response.body()
             } else {
@@ -34,8 +35,9 @@ object CenterServerCommunication {
     /**
      * Crea un nou centre al servidor.
      *
+     * @param token Token necessari per a la petició.
      * @param centre Objecte [Center] que conté la info del centre que volem afegir.
-     * @return El centre afegit o null en cas d'error.
+     * @return True si la creació s'ha realitzat correctament, false en cas d'error.
      */
     suspend fun createClinica(token:String, center: Center): Boolean = withContext(Dispatchers.IO) {
         try {
@@ -53,14 +55,16 @@ object CenterServerCommunication {
     /**
      * Actualitza les dades d'un centre existent al servidor.
      *
+     * @param token Token necessari per a la petició.
      * @param centre Objecte [Center] que conté les dades actualitzades del centre.
-     * @return El centre actualitzat o null en cas d'error.
+     * @return missatge retornat pel servidor
      */
-    suspend fun updateClinica(centre: Center): Center? = withContext(Dispatchers.IO) {
+    suspend fun updateClinica(token: String, centre: Center): String? = withContext(Dispatchers.IO) {
         try {
-            val response = RetrofitClient.instance.updateClinica(centre).awaitResponse()
+            val bearerToken = "Bearer $token"
+            val response = RetrofitClient.instance.updateClinica(bearerToken, centre).awaitResponse()
             if (response.isSuccessful) {
-                response.body()
+                response.body()  // Retorna el missatge "Clínica actualitzada correctament"
             } else {
                 println("Error a l'actualitzar el centre: ${response.code()} - ${response.message()}")
                 null
@@ -76,13 +80,15 @@ object CenterServerCommunication {
      *
      * @param token Token necessari per a la petició.
      * @param id Identificador del centre que es vol eliminar.
-     * @return true si la petició s'ha realitzat correctament o false en cas contrari.
+     * @return True si la petició s'ha realitzat correctament, false en cas contrari.
      */
     suspend fun deleteClinica(id: Long, token: String): Boolean = withContext(Dispatchers.IO) {
         try {
-            val response = RetrofitClient.instance.deleteClinica(id, token).awaitResponse()
+            val bearerToken = "Bearer $token"
+            val response = RetrofitClient.instance.deleteClinica(id, bearerToken).awaitResponse()
             if (response.isSuccessful) {
-                true
+                val body = response.body()?.trim()  // Eliminem espais en blanc
+                body == "Clínica eliminada correctament"
             } else {
                 println("Error a l'eliminar el centre: ${response.code()} - ${response.message()}")
                 false

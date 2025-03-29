@@ -11,5 +11,4 @@ data class Center (
     val horari_opertura: String,
     val horari_tancament: String,
     val email: String,
-    val token: String
 )

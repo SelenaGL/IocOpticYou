@@ -3,6 +3,7 @@ package com.example.opticyou.communications.network
 import com.example.opticyou.data.Center
 import com.example.opticyou.data.LoginRequest
 import com.example.opticyou.data.LoginResponse
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -42,8 +43,8 @@ interface ApiService {
      * @param token Token d'autenticació inclòs a la petició.
      * @return [List] de [Center] que conté els centres registrats.
      */
-    @GET("clinica/{token}")
-    fun getAllClinicas(@Path("token") token: String): Call<List<Center>>
+    @GET("clinica")
+    fun getAllClinicas(@Header("Authorization") token: String): Call<List<Center>>
 
     /**
      * Obté la llista de centres.
@@ -52,15 +53,15 @@ interface ApiService {
      * @param id Codi del centre a cercar
      * @return [Center] de la consulta
      */
-    @GET("clinica/{id}/{token}")
-    fun getClinicaById(@Path("id") id: Long, @Path("token") token: String): Call<Center>
+    @GET("clinica/{id}")
+    fun getClinicaById(@Path("id") id: Long, @Header("Authorization") token: String): Call<Center>
 
     /**
      * Afegeix un nou centre.
      *
      * @param token Token d'autenticació inclòs a la petició.
      * @param centre Objecte [Center] amb la informació del centre a afegir.
-     * @return Objecte [Center] amb les dades del centre afegit.
+     * @return estat de la petició de creació.
      */
     @POST("clinica")
     fun createClinica(@Header("Authorization") token: String, @Body center: Center): Call<Void>
@@ -69,27 +70,19 @@ interface ApiService {
      * Actualitza les dades d'un centre existent.
      *
      * @param token Token d'autenticació inclòs a la petició.
-     * @param idclinica Identificador del centre a actualitzar.
      * @param centre Objecte [Center] amb les noves dades.
-     * @return Objecte [Center] amb les dades actualitzades.
+     * @return missatge informatiu
      */
     @PUT("clinica/update")
-    fun updateClinica(@Body centre: Center): Call<Center>
+    fun updateClinica(@Header("Authorization") token: String, @Body centre: Center): Call<String>
 
     /**
      * Elimina un centre.
      *
      * @param token Token d'autenticació inclòs a la petició.
      * @param idclinica Identificador del centre a eliminar.
-     * @return [Call] de tipus [Void] que indica la realització de l'operació.
+     * @return missatge informatiu
      */
-    @DELETE("clinica/{id}/{token}")
-    fun deleteClinica(@Path("id") id: Long,@Path("token") token: String): Call<String>
-
-//    @GET("usuari/all")
-//    fun getAllUsers(): Call<List<User>>
-//
-//    @GET("usuari/{username}")
-//    fun getUser(@Path("username") username: String): Call<User>
-
+    @DELETE("clinica/{id}")
+    fun deleteClinica(@Path("id") id: Long, @Header("Authorization") token: String): Call<String>
 }

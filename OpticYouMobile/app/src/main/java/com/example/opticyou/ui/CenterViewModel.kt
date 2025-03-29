@@ -35,9 +35,9 @@ class CenterViewModel:IOViewModel () {
     fun loadCentres() {
         val token = authToken ?: return //Si el token d'autenticació no està establert, la funció no realitza cap operació.
         viewModelScope.launch {
-            val centresFromServer = CenterServerCommunication.getCentres(token)
-            if (centresFromServer != null) {
-                _centres.value = centresFromServer
+            val centresServer = CenterServerCommunication.getCentres(token)
+            if (centresServer != null) {
+                _centres.value = centresServer
             }
         }
     }
@@ -55,18 +55,16 @@ class CenterViewModel:IOViewModel () {
     ) {
         val token = authToken ?: ""
         println("Token utilitzat per la creació: $token")
-        //val token = authToken ?: return
 
             // L'id inicialmente s'estableix a 0 perquè el servidor li assignarà un
             val newCenter = Center(
-                idClinica = null,
+                idClinica = 0,
                 nom = nom,
                 direccio = direccio,
                 telefon = telefon,
                 horari_opertura = horari_opertura,
                 horari_tancament = horari_tancament,
                 email = email,
-                token = token
             )
         viewModelScope.launch {
             val addedCentre = CenterServerCommunication.createClinica(token, newCenter)
@@ -84,12 +82,15 @@ class CenterViewModel:IOViewModel () {
      * @param updatedCentre Centre amb les dades actualitzades.
      */
     fun updateClinica(updatedCentre: Center) {
+        val token = authToken ?: return
         viewModelScope.launch {
-            val centre = CenterServerCommunication.updateClinica(updatedCentre)
-            centre?.let {
+            val result = CenterServerCommunication.updateClinica(token, updatedCentre)
+            if (result != null && result == "Clínica actualitzada correctament") {
                 _centres.value = _centres.value.map { current ->
-                    if (current.idClinica == it.idClinica) it else current
+                    if (current.idClinica == updatedCentre.idClinica) updatedCentre else current
                 }
+            } else {
+                println("Error en l'actualització: $result")
             }
         }
     }
@@ -99,13 +100,14 @@ class CenterViewModel:IOViewModel () {
      *
      * @param centre Centre que es vol eliminar.
      */
-//    fun deleteClinica(centre: Center) {
-//        val token = authToken ?: return
-//        viewModelScope.launch {
-//            val success = CenterServerCommunication.deleteClinica(centre.idClinica, token)
-//            if (success) {
-//                _centres.value = _centres.value.filter { it.idClinica != centre.idClinica }
-//            }
-//        }
-//    }
+    fun deleteClinica(centre: Center) {
+        val token = authToken ?: return
+        viewModelScope.launch {
+            val id = centre.idClinica ?: return@launch
+            val success = CenterServerCommunication.deleteClinica(id, token)
+            if (success) {
+                _centres.value = _centres.value.filter { it.idClinica != centre.idClinica }
+            }
+        }
+    }
 }
