@@ -41,6 +41,7 @@ import com.example.opticyou.ui.MenuAdminScreen
 import com.example.opticyou.ui.MenuUserScreen
 import androidx.activity.compose.BackHandler
 import com.example.opticyou.ui.CenterScreen
+import com.example.opticyou.ui.ClientScreen
 
 
 enum class Screens(val title: String) {
@@ -48,7 +49,7 @@ enum class Screens(val title: String) {
     UserMenu(title = "Menú Usuari"),
     AdminMenu(title = "Menú Administrador"),
     Centres(title = "Gestió de Centres"),
-    Query(title = "Query"),
+    Clients (title = "Gestió de Clients"),
     List(title = "List"),
     Add(title = "Add")
 }
@@ -215,6 +216,11 @@ fun OpticYouDemoApp(
             composable(route = Screens.Centres.name) {
                 CenterScreen(modifier = Modifier.fillMaxHeight())
             }
+
+            composable(route = Screens.Clients.name) {
+                ClientScreen(modifier = Modifier.fillMaxHeight())
+            }
+
 
 //
 //            composable(route = Screens.Add.name) {

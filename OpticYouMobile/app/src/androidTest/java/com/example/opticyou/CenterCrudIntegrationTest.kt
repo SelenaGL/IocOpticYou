@@ -27,7 +27,7 @@ class CenterIntegrationServerTests {
         // Configura Retrofit per apuntar al servidor de proves
         RetrofitClient.setBaseUrlForTesting("http://10.0.2.2:8083/")
 
-        // Crida login per obtenir un token vàlid (similars al del test de login)
+        // Crida login per obtenir un token vàlid
         val loginResponse = ServerRequests.login("admin@optica.cat", "1234")
         assertNotNull("El login no hauria de retornar null", loginResponse)
         assertTrue("El login ha de ser exitós", loginResponse!!.success)
@@ -122,7 +122,6 @@ class CenterIntegrationServerTests {
      */
     @Test
     fun deleteCenterRealServer() = runBlocking {
-        // Configura Retrofit per apuntar al servidor de proves
         RetrofitClient.setBaseUrlForTesting("http://10.0.2.2:8083/")
 
         // Obté un token vàlid amb login

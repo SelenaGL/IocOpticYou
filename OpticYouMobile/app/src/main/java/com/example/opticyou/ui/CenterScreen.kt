@@ -1,6 +1,7 @@
 package com.example.opticyou.ui
 
 import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -133,7 +134,13 @@ fun CenterScreen(
                         horari_opertura,
                         horari_tancament,
                         email
-                    )
+                    ) { success ->
+                    if (success) {
+                        Toast.makeText(context, "Centre creat correctament", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(context, "Error en la creació del centre", Toast.LENGTH_SHORT).show()
+                    }
+                }
                     selectedCenter = null
                     nom = ""
                     direccio = ""
@@ -158,7 +165,13 @@ fun CenterScreen(
                             email = email,
 
                         )
-                        viewModel.updateClinica(updatedCenter)
+                        viewModel.updateClinica(updatedCenter) { success ->
+                            if (success) {
+                                Toast.makeText(context, "Centre actualitzat correctament", Toast.LENGTH_SHORT).show()
+                            } else {
+                                Toast.makeText(context, "Error en l'actualització del centre", Toast.LENGTH_SHORT).show()
+                            }
+                        }
                         selectedCenter = null
                         nom = ""
                         direccio = ""
@@ -179,7 +192,13 @@ fun CenterScreen(
             Button(
                 onClick = {
                     if (selectedCenter != null) {
-                        viewModel.deleteClinica(selectedCenter!!)
+                        viewModel.deleteClinica(selectedCenter!!) { success ->
+                            if (success) {
+                                Toast.makeText(context, "Centre eliminat correctament", Toast.LENGTH_SHORT).show()
+                            } else {
+                                Toast.makeText(context, "Error en l'eliminació del centre", Toast.LENGTH_SHORT).show()
+                            }
+                        }
                         selectedCenter = null
                         nom = ""
                         direccio = ""
@@ -197,7 +216,13 @@ fun CenterScreen(
             // Botó de consulta
             Button(
                 onClick = {
-                    viewModel.loadCentres()
+                    viewModel.loadCentres { success ->
+                        if (success) {
+                            Toast.makeText(context, "Centres carregats correctament", Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(context, "Error al carregar els centres", Toast.LENGTH_SHORT).show()
+                        }
+                    }
                 },
                 modifier = Modifier.weight(1f)
             ) {

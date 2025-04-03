@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 /**
  * ViewModel que gestiona les operacions relacionades amb els centres.
  */
-class CenterViewModel:IOViewModel () {
+class CenterViewModel : IOViewModel() {
 
     // Llista de centres gestionada com a StateFlow
     private val _centres = MutableStateFlow<List<Center>>(emptyList())
@@ -32,12 +32,18 @@ class CenterViewModel:IOViewModel () {
     /**
      * Carrega la llista de centres des del servidor.
      */
-    fun loadCentres() {
-        val token = authToken ?: return //Si el token d'autenticació no està establert, la funció no realitza cap operació.
+    fun loadCentres(onResult: (Boolean) -> Unit) {
+        val token = authToken
+            ?: return onResult(false) //Si no hi ha token d'autenticació, no es realitza cap operació.
         viewModelScope.launch {
             val centresServer = CenterServerCommunication.getCentres(token)
             if (centresServer != null) {
                 _centres.value = centresServer
+                println("Centres carregats correctament")
+                onResult(true)
+            } else {
+                println("Error al carregar els centres")
+                onResult(false)
             }
         }
     }
@@ -46,26 +52,28 @@ class CenterViewModel:IOViewModel () {
      * Afegeix un nou centre al servidor.
      *
      */
-    fun addClinica(nom: String,
-                   direccio: String,
-                   telefon: String,
-                   horari_opertura: String,
-                   horari_tancament: String,
-                   email: String
+    fun addClinica(
+        nom: String,
+        direccio: String,
+        telefon: String,
+        horari_opertura: String,
+        horari_tancament: String,
+        email: String,
+        onResult: (Boolean) -> Unit // per notificar el resultat
     ) {
         val token = authToken ?: ""
         println("Token utilitzat per la creació: $token")
 
-            // L'id inicialmente s'estableix a 0 perquè el servidor li assignarà un
-            val newCenter = Center(
-                idClinica = 0,
-                nom = nom,
-                direccio = direccio,
-                telefon = telefon,
-                horari_opertura = horari_opertura,
-                horari_tancament = horari_tancament,
-                email = email,
-            )
+        // L'id inicialmente s'estableix a 0 perquè el servidor li assignarà un
+        val newCenter = Center(
+            idClinica = 0,
+            nom = nom,
+            direccio = direccio,
+            telefon = telefon,
+            horari_opertura = horari_opertura,
+            horari_tancament = horari_tancament,
+            email = email,
+        )
         viewModelScope.launch {
             val addedCentre = CenterServerCommunication.createClinica(token, newCenter)
             if (addedCentre) {
@@ -73,6 +81,7 @@ class CenterViewModel:IOViewModel () {
             } else {
                 println("Error en la creació de la clínica")
             }
+            onResult(addedCentre)
         }
     }
 
@@ -81,33 +90,45 @@ class CenterViewModel:IOViewModel () {
      *
      * @param updatedCentre Centre amb les dades actualitzades.
      */
-    fun updateClinica(updatedCentre: Center) {
-        val token = authToken ?: return
+    fun updateClinica(updatedCentre: Center, onResult: (Boolean) -> Unit) {
+        // Validem que els camps obligatoris no siguin buits
+        if (updatedCentre.nom.isBlank() || updatedCentre.email.isBlank() || updatedCentre.telefon.isBlank()) {
+            onResult(false)
+            return
+        }
+        val token = authToken ?: return onResult(false)
         viewModelScope.launch {
             val result = CenterServerCommunication.updateClinica(token, updatedCentre)
             if (result != null && result == "Clínica actualitzada correctament") {
                 _centres.value = _centres.value.map { current ->
                     if (current.idClinica == updatedCentre.idClinica) updatedCentre else current
                 }
+                onResult(true)
             } else {
                 println("Error en l'actualització: $result")
+                onResult(false)
             }
         }
     }
+
 
     /**
      * Elimina un centre del servidor.
      *
      * @param centre Centre que es vol eliminar.
      */
-    fun deleteClinica(centre: Center) {
-        val token = authToken ?: return
+    fun deleteClinica(centre: Center, onResult: (Boolean) -> Unit) {
+        val token = authToken ?: return onResult(false)
         viewModelScope.launch {
             val id = centre.idClinica ?: return@launch
             val success = CenterServerCommunication.deleteClinica(id, token)
             if (success) {
                 _centres.value = _centres.value.filter { it.idClinica != centre.idClinica }
+                println("Centre eliminat correctament")
+            } else {
+                println("Error en l'eliminació del centre")
             }
+            onResult(success)
         }
     }
 }

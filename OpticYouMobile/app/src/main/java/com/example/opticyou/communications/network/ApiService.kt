@@ -1,6 +1,7 @@
 package com.example.opticyou.communications.network
 
 import com.example.opticyou.data.Center
+import com.example.opticyou.data.Client
 import com.example.opticyou.data.LoginRequest
 import com.example.opticyou.data.LoginResponse
 import okhttp3.ResponseBody
@@ -85,4 +86,53 @@ interface ApiService {
      */
     @DELETE("clinica/{id}")
     fun deleteClinica(@Path("id") id: Long, @Header("Authorization") token: String): Call<String>
+
+    /**
+     * Endpoint per obtenir la llista de tots els clients.
+     *
+     * @param token Token d'autenticació inclòs al header.
+     * @return Llista de [Client].
+     */
+    @GET("client")
+    fun getAllClients(@Header("Authorization") token: String): Call<List<Client>>
+
+    /**
+     * Endpoint per obtenir un client pel seu identificador.
+     *
+     * @param id Identificador del client.
+     * @param token Token d'autenticació.
+     * @return Un [Client].
+     */
+    @GET("client/{id}")
+    fun getClientById(@Path("id") id: Long, @Header("Authorization") token: String): Call<Client>
+
+    /**
+     * Endpoint per crear un nou client.
+     *
+     * @param token Token d'autenticació.
+     * @param client Objecte [Client] amb les dades a afegir.
+     * @return [Void] si la creació ha estat exitosa.
+     */
+    @POST("client")
+    fun createClient(@Header("Authorization") token: String, @Body client: Client): Call<Void>
+
+    /**
+     * Endpoint per actualitzar un client existent.
+     *
+     * @param token Token d'autenticació.
+     * @param client Objecte [Client] amb les noves dades.
+     * @return L'objecte [Client] actualitzat.
+     */
+    @PUT("client/update")
+    fun updateClient(@Header("Authorization") token: String, @Body client: Client): Call<ResponseBody>
+
+    /**
+     * Endpoint per eliminar un client pel seu identificador.
+     *
+     * @param id Identificador del client a eliminar.
+     * @param token Token d'autenticació.
+     * @return [Void] si l'operació ha estat exitosa.
+     */
+    @DELETE("client/{id}")
+    fun deleteClient(@Path("id") id: Long, @Header("Authorization") token: String): Call<Void>
 }

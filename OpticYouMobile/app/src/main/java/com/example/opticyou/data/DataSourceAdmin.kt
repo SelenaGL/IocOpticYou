@@ -9,7 +9,7 @@ import com.example.opticyou.Screens
 object DataSourceAdmin {
     val options=mapOf(
         "Gestió de centres" to Screens.Centres.name,
-        "Gestió de pacients" to Screens.Query.name,
+        "Gestió de clients" to Screens.Clients.name,
         "Gestió de cites" to Screens.List.name,
         "Gestió de pautes" to Screens.Add.name,
         "Configuració" to "4")
