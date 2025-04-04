@@ -31,12 +31,15 @@ class ClientViewModel : ViewModel() {
     /**
      * Carrega la llista de clients des del servidor.
      */
-    fun loadClients() {
-        val token = authToken ?: return
+    fun loadClients(onResult: (Boolean) -> Unit = {}) {
+        val token = authToken ?: return onResult(false)
         viewModelScope.launch {
             val clientsFromServer = ClientServerCommunication.getClients(token)
             if (clientsFromServer != null) {
                 _clients.value = clientsFromServer
+                onResult(true)
+            } else {
+                onResult(false)
             }
         }
     }

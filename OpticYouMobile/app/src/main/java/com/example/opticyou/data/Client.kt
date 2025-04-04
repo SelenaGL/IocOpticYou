@@ -7,7 +7,7 @@ data class Client (
     val idUsuari: Long? = null,
     val nom: String,
     val email: String,
-    val contrasenya: String,
+    val contrasenya: String?,
     val telefon: String,
     val sexe: String,
     val dataNaixament: String,

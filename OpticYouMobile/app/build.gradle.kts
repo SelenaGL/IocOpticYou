@@ -95,7 +95,8 @@ dependencies {
     testImplementation ("org.mockito:mockito-core:4.11.0")
     testImplementation ("io.mockk:mockk:1.13.3")
     testImplementation ("io.mockk:mockk:1.13.3")
-    testImplementation ("io.mockk:mockk-android:1.13.3") // Si fas proves instrumentades
+    testImplementation ("io.mockk:mockk-android:1.13.3") // proves instrumentades
+    testImplementation ("com.squareup.retrofit2:retrofit-mock:2.9.0")
 
     // Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")

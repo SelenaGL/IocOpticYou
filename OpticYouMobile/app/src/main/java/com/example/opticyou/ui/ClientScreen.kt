@@ -115,14 +115,14 @@ fun ClientScreen(
             label = { Text("ID Clínica") },
             modifier = Modifier.fillMaxWidth()
         )
-        Spacer(modifier = Modifier.height(8.dp))
-
-        OutlinedTextField(
-            value = historialId,
-            onValueChange = { historialId = it },
-            label = { Text("ID Historial") },
-            modifier = Modifier.fillMaxWidth()
-        )
+//        Spacer(modifier = Modifier.height(8.dp))
+//
+//        OutlinedTextField(
+//            value = historialId,
+//            onValueChange = { historialId = it },
+//            label = { Text("ID Historial") },
+//            modifier = Modifier.fillMaxWidth()
+//        )
         Spacer(modifier = Modifier.height(16.dp))
 
         Row(
@@ -157,7 +157,7 @@ fun ClientScreen(
                     sexe = ""
                     dataNaixament = ""
                     clinicaId = ""
-                    historialId = ""
+                    //historialId = ""
                 },
                 modifier = Modifier.weight(1f)
             ) {
@@ -192,7 +192,7 @@ fun ClientScreen(
                         sexe = ""
                         dataNaixament = ""
                         clinicaId = ""
-                        historialId = ""
+                        //historialId = ""
                     }
                 },
                 modifier = Modifier.weight(1f),
@@ -221,7 +221,7 @@ fun ClientScreen(
                         sexe = ""
                         dataNaixament = ""
                         clinicaId = ""
-                        historialId = ""
+                        //historialId = ""
                     }
                 },
                 modifier = Modifier.weight(1f),
@@ -231,7 +231,15 @@ fun ClientScreen(
             }
             // Botó "Consulta"
             Button(
-                onClick = { viewModel.loadClients() },
+                onClick = {
+                    viewModel.loadClients { success ->
+                        if (success) {
+                            Toast.makeText(context, "Clients carregats correctament", Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(context, "Error al carregar els clients", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                },
                 modifier = Modifier.weight(1f)
             ) {
                 Text("Consulta")
@@ -254,7 +262,7 @@ fun ClientScreen(
                             sexe = client.sexe
                             dataNaixament = client.dataNaixament
                             clinicaId = client.clinicaId.toString()
-                            historialId = client.historialId.toString()
+                            //historialId = client.historialId.toString()
                         }
                         .padding(vertical = 8.dp)
                 ) {

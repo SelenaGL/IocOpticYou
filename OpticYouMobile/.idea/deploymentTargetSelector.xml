@@ -5,10 +5,10 @@
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="testQueryCentersRealServer()">
+      <SelectionState runConfigName="queryCentersRealServer()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="queryCentersRealServer()">
+      <SelectionState runConfigName="queryCentersRealServer() (1)">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
       <SelectionState runConfigName="createCenterRealServer()">
