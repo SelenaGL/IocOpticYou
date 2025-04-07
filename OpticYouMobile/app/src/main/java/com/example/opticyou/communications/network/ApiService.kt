@@ -2,6 +2,7 @@ package com.example.opticyou.communications.network
 
 import com.example.opticyou.data.Center
 import com.example.opticyou.data.Client
+import com.example.opticyou.data.Historial
 import com.example.opticyou.data.LoginRequest
 import com.example.opticyou.data.LoginResponse
 import okhttp3.ResponseBody
@@ -135,4 +136,36 @@ interface ApiService {
      */
     @DELETE("client/{id}")
     fun deleteClient(@Path("id") id: Long, @Header("Authorization") token: String): Call<Void>
+
+    /**
+     * Endpoint per obtenir la llista de tots els historials.
+     *
+     * @param token Token d'autenticació inclòs al header.
+     * @return Llista de [Historial].
+     */
+    @GET("historial")
+    fun getAllHistorial(@Header("Authorization") token: String): Call<List<Historial>>
+
+    /**
+     * Endpoint per obtenir un historial pel seu identificador.
+     *
+     * @param id Identificador de l'historial.
+     * @param token Token d'autenticació.
+     * @return L'objecte [Historial].
+     */
+
+    @GET("historial/{id}")
+    fun getHistorialById(@Path("id") id: Long, @Header("Authorization") token: String): Call<Historial>
+    /**
+     * Endpoint per actualitzar un historial existent.
+     *
+     * @param token Token d'autenticació.
+     * @param historial Objecte [Historial] amb les noves dades.
+     * @return Missatge informatiu.
+     */
+
+    @PUT("historial/update")
+    fun updateHistorial(@Header("Authorization") token: String, @Body historial: Historial): Call<String>
+
 }
+

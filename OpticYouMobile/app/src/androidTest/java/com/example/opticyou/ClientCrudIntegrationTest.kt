@@ -30,8 +30,8 @@ class ClientCrudIntegrationTest {
         // Crea un nou client. L'id es pot establir en 0 perquè s'assumeix que el servidor genera l'identificador.
         val newClient = Client(
             idUsuari = 0,
-            nom = "Client de Prova",
-            email = "clientprova@example.com",
+            nom = "Client creat",
+            email = "clientcreat@optica.cat",
             contrasenya = "1234",
             telefon = "666555444",
             sexe = "Dona",
@@ -83,7 +83,7 @@ class ClientCrudIntegrationTest {
             contrasenya = "1234",
             telefon = "666555444",
             sexe = "Dona",
-            dataNaixament = "20/03/2000",
+            dataNaixament = "20/03/2010",
             clinicaId = 1,
             historialId = 0,
         )
@@ -125,7 +125,7 @@ class ClientCrudIntegrationTest {
             contrasenya = "1234",
             telefon = "666555444",
             sexe = "Dona",
-            dataNaixament = "20/03/2000",
+            dataNaixament = "20/03/2015",
             clinicaId = 1,
             historialId = 0,
         )

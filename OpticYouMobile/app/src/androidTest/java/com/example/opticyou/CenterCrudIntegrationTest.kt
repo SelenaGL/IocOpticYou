@@ -13,6 +13,33 @@ import org.junit.Assert.assertTrue
 class CenterCrudIntegrationTest {
 
     /**
+     * Prova la creació d'un centre.
+     */
+    @Test
+    fun createCenterRealServer() = runBlocking {
+        RetrofitClient.setBaseUrlForTesting("http://10.0.2.2:8083/")
+        val loginResponse = ServerRequests.login("admin", "1234")
+        assertNotNull("El login no hauria de retornar null", loginResponse)
+        assertTrue("El login ha de ser exitós", loginResponse!!.success)
+        val token = loginResponse.token
+
+        // Defineix un centre nou
+        val newCenter = Center(
+            idClinica = 0,
+            nom = "Centre creat",
+            direccio = "Carrer Barcelona, 100",
+            telefon = "666777888",
+            horari_opertura = "09:30",
+            horari_tancament = "19:30",
+            email = "provacentrecreat@optica.cat"
+        )
+
+        // Crida la creació
+        val createCenter = CenterServerCommunication.createClinica(token, newCenter)
+        assertTrue("La creació del centre hauria de ser exitosa", createCenter)
+    }
+
+    /**
      * Prova la consulta de tots els centres en un servidor real.
      */
     @Test
@@ -33,34 +60,6 @@ class CenterCrudIntegrationTest {
         //assertTrue("La llista de centres hauria de tenir almenys un element", centers!!.isNotEmpty())
     }
 
-
-    /**
-     * Prova la creació d'un centre.
-     */
-    @Test
-    fun createCenterRealServer() = runBlocking {
-        RetrofitClient.setBaseUrlForTesting("http://10.0.2.2:8083/")
-        val loginResponse = ServerRequests.login("admin", "1234")
-        assertNotNull("El login no hauria de retornar null", loginResponse)
-        assertTrue("El login ha de ser exitós", loginResponse!!.success)
-        val token = loginResponse.token
-
-        // Defineix un centre nou
-        val newCenter = Center(
-            idClinica = 0,
-            nom = "Centre creat",
-            direccio = "Carrer Create, 100",
-            telefon = "111111111",
-            horari_opertura = "09:00",
-            horari_tancament = "18:00",
-            email = "create@test.cat"
-        )
-
-        // Crida la creació
-        val createCenter = CenterServerCommunication.createClinica(token, newCenter)
-        assertTrue("La creació del centre hauria de ser exitosa", createCenter)
-    }
-
     /**
      * Prova l'actualització d'un centre en un servidor real.
      *
@@ -79,11 +78,11 @@ class CenterCrudIntegrationTest {
         val newCenter = Center(
             idClinica = 0,
             nom = "Centre a Actualitzar",
-            direccio = "Carrer Update, 200",
-            telefon = "222222222",
+            direccio = "Carrer Girona, 200",
+            telefon = "666888999",
             horari_opertura = "10:00",
-            horari_tancament = "19:00",
-            email = "update@test.cat"
+            horari_tancament = "20:00",
+            email = "provacentreactualitzat@optica.cat"
         )
         val created = CenterServerCommunication.createClinica(token, newCenter)
         assertTrue("La creació del centre per actualitzar hauria de ser exitosa", created)
@@ -121,11 +120,11 @@ class CenterCrudIntegrationTest {
         val newCenter = Center(
             idClinica = 0,
             nom = "Centre a Eliminar",
-            direccio = "Carrer Delete, 300",
-            telefon = "333333333",
-            horari_opertura = "08:00",
-            horari_tancament = "17:00",
-            email = "delete@test.cat"
+            direccio = "Carrer Tarragona, 300",
+            telefon = "666999888",
+            horari_opertura = "09:00",
+            horari_tancament = "19:00",
+            email = "provacentreeliminat@optica.cat"
         )
         val created = CenterServerCommunication.createClinica(token, newCenter)
         assertTrue("La creació del centre per eliminar hauria de ser exitosa", created)

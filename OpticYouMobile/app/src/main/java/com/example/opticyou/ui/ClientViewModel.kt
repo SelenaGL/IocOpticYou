@@ -84,10 +84,6 @@ class ClientViewModel : ViewModel() {
         viewModelScope.launch {
             val success = ClientServerCommunication.createClient(token, newClient)
             onResult(success)
-            if (success) {
-                // Actualitza la llista de clients després de crear-ne un de nou
-                loadClients()
-            }
         }
     }
 

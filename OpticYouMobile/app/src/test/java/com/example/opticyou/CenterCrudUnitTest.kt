@@ -21,10 +21,10 @@ class CenterCrudUnitTest {
     private val center = Center(
         idClinica = 0,
         nom = "Centre prova",
-        direccio = "Carrer prova, 10",
+        direccio = "Carrer Lleida, 10",
         telefon = "666555444",
         horari_opertura = "09:00",
-        horari_tancament = "18:00",
+        horari_tancament = "19:00",
         email = "centreprova@optica.cat"
     )
 

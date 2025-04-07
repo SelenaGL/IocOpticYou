@@ -42,6 +42,7 @@ import com.example.opticyou.ui.MenuUserScreen
 import androidx.activity.compose.BackHandler
 import com.example.opticyou.ui.CenterScreen
 import com.example.opticyou.ui.ClientScreen
+import com.example.opticyou.ui.HistorialScreen
 
 
 enum class Screens(val title: String) {
@@ -50,6 +51,7 @@ enum class Screens(val title: String) {
     AdminMenu(title = "Menú Administrador"),
     Centres(title = "Gestió de Centres"),
     Clients (title = "Gestió de Clients"),
+    Historials (title = "Gestió d'Historials"),
     List(title = "List"),
     Add(title = "Add")
 }
@@ -221,13 +223,11 @@ fun OpticYouDemoApp(
                 ClientScreen(modifier = Modifier.fillMaxHeight())
             }
 
-
-//
-//            composable(route = Screens.Add.name) {
-//                AddScreen(
-//                    modifier = Modifier.fillMaxHeight()
-//                )
-//            }
+            composable(route = Screens.Historials.name) {
+                HistorialScreen(
+                    modifier = Modifier.fillMaxHeight()
+                )
+            }
 
         }
     }
