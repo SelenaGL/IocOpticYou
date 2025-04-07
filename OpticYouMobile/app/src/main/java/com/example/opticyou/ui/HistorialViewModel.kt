@@ -3,9 +3,7 @@ package com.example.opticyou.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.opticyou.communications.network.ClientServerCommunication
 import com.example.opticyou.communications.network.HistorialServerCommunication
-import com.example.opticyou.data.Client
 import com.example.opticyou.data.Historial
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
