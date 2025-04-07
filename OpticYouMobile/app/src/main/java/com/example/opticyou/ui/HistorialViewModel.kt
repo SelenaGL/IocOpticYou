@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 /**
- * ViewModel que gestiona les operacions CRUD per a clients.
+ * ViewModel que gestiona les operacions CRUD pels historials.
  */
 class HistorialViewModel : ViewModel() {
 
