@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 /**
  * ViewModel que gestiona les operacions CRUD per a clients.
  */
-class ClientViewModel : ViewModel() {
+class ClientViewModel : IOViewModel() {
 
     private val _clients = MutableStateFlow<List<Client>>(emptyList())
     val clients: StateFlow<List<Client>> = _clients
@@ -55,7 +55,7 @@ class ClientViewModel : ViewModel() {
      * @param dataNaixament Data de naixement.
      * @param clinicaId ID de la clínica.
      * @param historialId ID del historial.
-     * @param onResult Callback que rep un booleà indicant l'èxit.
+     * @param onResult rep un booleà indicant l'èxit.
      */
     fun createClient(
         nom: String,
@@ -91,7 +91,7 @@ class ClientViewModel : ViewModel() {
      * Actualitza les dades d'un client existent.
      *
      * @param updatedClient Client amb les noves dades.
-     * @param onResult Callback que rep un booleà indicant l'èxit.
+     * @param onResult rep un booleà indicant l'èxit.
      */
     fun updateClient(updatedClient: Client, onResult: (Boolean) -> Unit) {
         val token = authToken ?: return
@@ -112,7 +112,7 @@ class ClientViewModel : ViewModel() {
      * Elimina un client.
      *
      * @param client Client a eliminar.
-     * @param onResult Callback que rep un booleà indicant l'èxit.
+     * @param onResult rep un booleà indicant l'èxit.
      */
     fun deleteClient(client: Client, onResult: (Boolean) -> Unit) {
         val token = authToken ?: return

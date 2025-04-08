@@ -3,7 +3,7 @@ package com.example.opticyou.data
 import java.time.LocalDateTime
 
 /**
- * Representa un centre amb la seva informació bàsica.
+ * Representa un historial amb la seva informació.
  */
 data class Historial (
     val idhistorial: Long? = null,

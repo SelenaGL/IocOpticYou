@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 /**
  * ViewModel que gestiona les operacions CRUD pels historials.
  */
-class HistorialViewModel : ViewModel() {
+class HistorialViewModel : IOViewModel() {
 
     private val _historials = MutableStateFlow<List<Historial>>(emptyList())
     val historials: StateFlow<List<Historial>> = _historials
@@ -50,7 +50,7 @@ class HistorialViewModel : ViewModel() {
      * Obté un historial pel seu identificador.
      *
      * @param id Identificador de l'historial.
-     * @param onResult Callback que retorna l'objecte [Historial] obtingut o null si hi ha error.
+     * @param onResult retorna l'objecte [Historial] obtingut o null si hi ha error.
      */
     fun getHistorialById(id: Long, onResult: (Historial?) -> Unit) {
         val token = authToken ?: return onResult(null)
@@ -64,7 +64,7 @@ class HistorialViewModel : ViewModel() {
      * Actualitza un historial existent.
      *
      * @param updatedHistorial Objecte [Historial] amb les dades actualitzades.
-     * @param onResult Callback que retorna true si l'actualització ha estat exitosa, false en cas contrari.
+     * @param onResult retorna true si l'actualització ha estat exitosa, false en cas contrari.
      */
     fun updateHistorial(updatedHistorial: Historial, onResult: (Boolean) -> Unit) {
         val token = authToken ?: return onResult(false)

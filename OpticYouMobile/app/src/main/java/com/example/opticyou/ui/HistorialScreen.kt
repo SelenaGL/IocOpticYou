@@ -20,7 +20,7 @@ import com.example.opticyou.data.LoginResponse
 import androidx.compose.ui.tooling.preview.Preview
 
 /**
- * Pantalla composable per gestionar el CRUD de clients.
+ * Pantalla composable per gestionar el CRUD dels historials.
  *
  * @param modifier Modifier opcional.
  * @param navigate Funció de navegació (per exemple, al login).

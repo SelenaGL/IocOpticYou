@@ -18,7 +18,7 @@ class HistorialCrudUnitTest {
 
     private val token = "token"
 
-    // Creem un historial de prova. Si el camp client és no nul, pots definir un dummy; en aquest exemple ho deixem null.
+    // Creem un historial de prova.
     private val historial = Historial(
         idhistorial = 1,
         dataCreacio = LocalDateTime.now().toString(),
