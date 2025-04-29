@@ -98,4 +98,43 @@ object ClientServerCommunication {
             false
         }
     }
+
+    /**
+     * Obté el client que s'ha loggejat
+     *
+     * @param id Id del client.
+     * @param token Token d'autenticació.
+     */
+    suspend fun getClientById(id: Long, token: String): Client? = withContext(Dispatchers.IO) {
+        val bearer = "Bearer $token"
+        val resp = RetrofitClient.instance.getClientById(id, bearer).awaitResponse()
+        if (resp.isSuccessful) resp.body() else null
+    }
+
+    /**
+     * Actualitza el client loggejat.
+     *
+     * @param token Token d'autenticació.
+     * @param client Objecte [Client] amb les noves dades.
+     * @return El [Client] actualitzat o null si hi ha error.
+     */
+    suspend fun updateSelf(token: String, client: Client): Boolean = withContext(Dispatchers.IO) {
+        val bearer = "Bearer $token"
+        RetrofitClient.instance.updateClientSelf(bearer, client)
+            .awaitResponse()
+            .isSuccessful
+    }
+
+    /**
+     * Elimina el client loggejat
+     *
+     * @param token Token d'autenticació.
+     * @return True si l'operació ha estat exitosa, false en cas contrari.
+     */
+    suspend fun deleteSelf(token: String): Boolean = withContext(Dispatchers.IO) {
+        val bearer = "Bearer $token"
+        RetrofitClient.instance.deleteClientSelf(bearer)
+            .awaitResponse()
+            .isSuccessful
+    }
 }

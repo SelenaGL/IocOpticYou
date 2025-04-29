@@ -98,7 +98,7 @@ interface ApiService {
     fun getAllClients(@Header("Authorization") token: String): Call<List<Client>>
 
     /**
-     * Endpoint per obtenir un client pel seu identificador.
+     * Endpoint per obtenir un client pel seu identificador (per rol CLIENT només retorna el propi perfil)
      *
      * @param id Identificador del client.
      * @param token Token d'autenticació.
@@ -136,6 +136,32 @@ interface ApiService {
      */
     @DELETE("client/{id}")
     fun deleteClient(@Path("id") id: Long, @Header("Authorization") token: String): Call<Void>
+
+
+    /**
+     * Actualitza les dades del client autenticat
+     *
+     * @param token Token d'autenticació.
+     * @param client Objecte [Client] amb les noves dades.
+     *
+     */
+    @PUT("client/update_client")
+    fun updateClientSelf(
+        @Header("Authorization") token: String,
+        @Body client: Client
+    ): Call<String>
+
+    /**
+     * Elimina el compte del client autenticat
+     *
+     * @param token Token d'autenticació.
+     * @return [Void] si l'operació ha estat exitosa.
+     */
+    @DELETE("client/delete_client")
+    fun deleteClientSelf(
+        @Header("Authorization") token: String
+    ): Call<String>
+
 
     /**
      * Endpoint per obtenir la llista de tots els historials.
