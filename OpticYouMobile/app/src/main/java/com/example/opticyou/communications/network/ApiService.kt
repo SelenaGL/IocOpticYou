@@ -5,6 +5,7 @@ import com.example.opticyou.data.Client
 import com.example.opticyou.data.Historial
 import com.example.opticyou.data.LoginRequest
 import com.example.opticyou.data.LoginResponse
+import com.example.opticyou.data.Treballador
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.Body
@@ -179,9 +180,9 @@ interface ApiService {
      * @param token Token d'autenticació.
      * @return L'objecte [Historial].
      */
-
     @GET("historial/{id}")
     fun getHistorialById(@Path("id") id: Long, @Header("Authorization") token: String): Call<Historial>
+
     /**
      * Endpoint per actualitzar un historial existent.
      *
@@ -189,9 +190,28 @@ interface ApiService {
      * @param historial Objecte [Historial] amb les noves dades.
      * @return Missatge informatiu.
      */
-
     @PUT("historial/update")
     fun updateHistorial(@Header("Authorization") token: String, @Body historial: Historial): Call<String>
+
+    @POST("treballador")
+    fun createTreballador(
+        @Header("Authorization") token: String, @Body treballador: Treballador): Call<Void>
+
+    @GET("treballador")
+    fun getAllTreballadors(
+        @Header("Authorization") token: String): Call<List<Treballador>>
+
+    @GET("treballador/{id}")
+    fun getTreballadorById(
+        @Path("id") id: Long, @Header("Authorization") token: String): Call<Treballador>
+
+    @PUT("treballador/update")
+    fun updateTreballador(
+        @Header("Authorization") token: String, @Body treballador: Treballador): Call<String>
+
+    @DELETE("treballador/{id}")
+    fun deleteTreballador(
+        @Path("id") id: Long, @Header("Authorization") token: String): Call<String>
 
 }
 

@@ -44,6 +44,7 @@ import com.example.opticyou.ui.CenterScreen
 import com.example.opticyou.ui.ClientScreen
 import com.example.opticyou.ui.HistorialScreen
 import com.example.opticyou.ui.ProfileScreen
+import com.example.opticyou.ui.TreballadorScreen
 
 
 enum class Screens(val title: String) {
@@ -52,6 +53,7 @@ enum class Screens(val title: String) {
     AdminMenu(title = "Menú Administrador"),
     Centres(title = "Gestió de Centres"),
     Clients (title = "Gestió de Clients"),
+    Treballadors(title = "Gestió Treballadors"),
     Historials (title = "Gestió d'Historials"),
     Profile (title = "Gestió del Perfil"),
     List(title = "List"),
@@ -223,6 +225,10 @@ fun OpticYouDemoApp(
 
             composable(route = Screens.Clients.name) {
                 ClientScreen(modifier = Modifier.fillMaxHeight())
+            }
+
+            composable(route = Screens.Treballadors.name) {
+                TreballadorScreen(modifier = Modifier.fillMaxHeight())
             }
 
             composable(route = Screens.Historials.name) {
