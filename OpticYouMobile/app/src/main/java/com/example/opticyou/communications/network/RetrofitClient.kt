@@ -24,7 +24,7 @@ object RetrofitClient {
         level = HttpLoggingInterceptor.Level.BODY
     }
 
-    // 1) Creem un TrustManager
+    // Creem un TrustManager
     private fun getUnsafeOkHttpClient(): OkHttpClient {
         // TrustManager que accepta qualsevol certificat
         val trustAllCerts = arrayOf<TrustManager>(object : X509TrustManager {

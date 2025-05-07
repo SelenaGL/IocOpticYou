@@ -3,7 +3,9 @@ package com.example.opticyou
 import com.example.opticyou.communications.ServerRequests
 import com.example.opticyou.communications.network.ClientServerCommunication
 import com.example.opticyou.communications.network.RetrofitClient
+import com.example.opticyou.communications.network.TreballadorServerCommunication
 import com.example.opticyou.data.Client
+import com.example.opticyou.data.Treballador
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
@@ -13,7 +15,7 @@ import org.junit.Test
 class ClientCrudIntegrationTest {
 
     /**
-     * Prova la creació d'un client.
+     * Prova la creació d'un treballador.
      */
     @Test
     fun testCreateClient() = runBlocking {
@@ -27,25 +29,26 @@ class ClientCrudIntegrationTest {
         val token = loginResponse.token
 
 
-        // Crea un nou client. L'id es pot establir en 0 perquè s'assumeix que el servidor genera l'identificador.
-        val newClient = Client(
+        // Crea un nou treballador.
+        val newTreballador = Treballador(
             idUsuari = 0,
-            nom = "Client creat",
-            email = "clientcreat@optica.cat",
+            nom = "Treballador creat",
+            email = "treballadorreat@optica.cat",
             contrasenya = "1234",
-            telefon = "666555444",
-            sexe = "Dona",
-            dataNaixament = "20/03/2000",
+            especialitat = "666555444",
+            estat = "Dona",
+            iniciJornada = "10:00",
+            diesJornada = "5",
+            fiJornada = "20:00",
             clinicaId = 1,
-            historialId = 0,
         )
-        val createClient = ClientServerCommunication.createClient(token, newClient)
-        println("Resultat de la creació del client: $createClient")
-        assertTrue("La creació del client ha de ser exitosa", createClient)
+        val createClient = TreballadorServerCommunication.create(token, newTreballador)
+        println("Resultat de la creació del treballador: $createClient")
+        assertTrue("La creació del treballador ha de ser exitosa", createClient)
     }
 
     /**
-     * Prova l'obtenció de la llista de clients.
+     * Prova l'obtenció de la llista de treballadors.
      */
     @Test
     fun testGetClients() = runBlocking {
@@ -57,13 +60,13 @@ class ClientCrudIntegrationTest {
         println("Token obtingut: ${loginResponse.token}")
         val token = loginResponse.token
 
-        val clients = ClientServerCommunication.getClients(token)
-        println("Llista de clients obtinguda: $clients")
-        assertNotNull("La llista de clients no pot ser null", clients)
+        val treballadors = TreballadorServerCommunication.getAll(token)
+        println("Llista de treballadors obtinguda: $treballadors")
+        assertNotNull("La llista de treballadors no pot ser null", treballadors)
     }
 
     /**
-     * Prova l'actualització d'un client existent.
+     * Prova l'actualització d'un treballador existent.
      */
     @Test
     fun testUpdateClient() = runBlocking {

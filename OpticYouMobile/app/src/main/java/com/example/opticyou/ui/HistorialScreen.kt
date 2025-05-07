@@ -30,6 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 fun HistorialScreen(
     modifier: Modifier = Modifier,
     navigate: (LoginResponse) -> Unit = {},
+    navigateToDiagnostic: (Historial) -> Unit = {},
     viewModel: HistorialViewModel = viewModel()
 ) {
     val context = LocalContext.current
@@ -108,6 +109,17 @@ fun HistorialScreen(
                 modifier = Modifier.weight(1f)
             ) {
                 Text("Consulta")
+            }
+
+            //Botó per navegar a Diagnòstic
+            Button(
+                onClick = {
+                    selectedHistorial?.let { navigateToDiagnostic(it) }
+                },
+                modifier = Modifier.weight(1f),
+                enabled = selectedHistorial != null
+            ) {
+                Text("Diagnòstic")
             }
         }
 

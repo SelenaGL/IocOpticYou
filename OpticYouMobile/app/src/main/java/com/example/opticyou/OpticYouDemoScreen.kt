@@ -55,6 +55,7 @@ enum class Screens(val title: String) {
     Clients (title = "Gestió de Clients"),
     Treballadors(title = "Gestió Treballadors"),
     Historials (title = "Gestió d'Historials"),
+    Diagnostic(title = "Diagnòstic"),
     Profile (title = "Gestió del Perfil"),
     List(title = "List"),
     Add(title = "Add")
@@ -235,13 +236,21 @@ fun OpticYouDemoApp(
                 HistorialScreen(
                     modifier = Modifier.fillMaxHeight()
                 )
+                HistorialScreen(
+                    modifier = Modifier.fillMaxHeight(),
+                    navigateToDiagnostic = {
+                        navController.navigate(Screens.Diagnostic.name)
+                    }
+                )
             }
-
             composable(route = Screens.Profile.name) {
                 ProfileScreen(
                     modifier = Modifier.fillMaxHeight()
                 )
             }
+//            composable(route = Screens.Diagnostic.name) {
+//                DiagnosticScreen(modifier = Modifier.fillMaxSize())
+//            }
         }
     }
 }

@@ -52,6 +52,7 @@ class TreballadorViewModel : IOViewModel() {
 
         nom: String,
         email: String,
+        contrasenya: String,
         especialitat: String,
         estat: String,
         iniciJornada: String,
@@ -67,6 +68,7 @@ class TreballadorViewModel : IOViewModel() {
             idUsuari = null,
             nom = nom,
             email = email,
+            contrasenya = contrasenya,
             especialitat = especialitat,
             estat = estat,
             iniciJornada = iniciJornada,

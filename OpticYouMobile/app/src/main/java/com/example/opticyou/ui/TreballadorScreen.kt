@@ -43,6 +43,7 @@ fun TreballadorScreen(
     var selected by remember { mutableStateOf<Treballador?>(null) }
     var nom by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
+    var contrasenya by remember { mutableStateOf("") }
     var especialitat by remember { mutableStateOf("") }
     var estat by remember { mutableStateOf("") }
     var inici by remember { mutableStateOf("") }
@@ -78,6 +79,14 @@ fun TreballadorScreen(
         Spacer(modifier = Modifier.height(8.dp))
 
         OutlinedTextField(
+            value = contrasenya,
+            onValueChange = { contrasenya = it },
+            label = { Text("Contrasenya") },
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+
+        OutlinedTextField(
             value = especialitat,
             onValueChange = { especialitat = it },
             label = { Text("Especialitat") },
@@ -101,13 +110,6 @@ fun TreballadorScreen(
         )
         Spacer(modifier = Modifier.height(8.dp))
 
-        OutlinedTextField(
-            value = dies,
-            onValueChange = { dies = it },
-            label = { Text("Dies Jornada") },
-            modifier = Modifier.fillMaxWidth()
-        )
-        Spacer(modifier = Modifier.height(8.dp))
 
         OutlinedTextField(
 
@@ -136,6 +138,7 @@ fun TreballadorScreen(
                     viewModel.addTreballador(
                         nom,
                         email,
+                        contrasenya,
                         especialitat,
                         estat,
                         inici,
@@ -161,6 +164,7 @@ fun TreballadorScreen(
                     selected = null
                     nom = ""
                     email = ""
+                    contrasenya = ""
                     especialitat = ""
                     estat = ""
                     inici = ""
@@ -179,6 +183,7 @@ fun TreballadorScreen(
                         val updatedTreballador = selected!!.copy(
                             nom = nom,
                             email = email,
+                            contrasenya = contrasenya,
                             especialitat = especialitat,
                             estat = estat,
                             iniciJornada = inici,
@@ -205,6 +210,7 @@ fun TreballadorScreen(
                         selected = null
                         nom = ""
                         email = ""
+                        contrasenya = ""
                         especialitat = ""
                         estat = ""
                         inici = ""
@@ -239,6 +245,7 @@ fun TreballadorScreen(
                         selected = null
                         nom = ""
                         email = ""
+                        contrasenya = ""
                         especialitat = ""
                         estat = ""
                         inici = ""
@@ -288,6 +295,7 @@ fun TreballadorScreen(
                             selected = treballador
                             nom = treballador.nom
                             email = treballador.email
+                            contrasenya = "****"
                             especialitat = treballador.especialitat
                             estat = treballador.estat
                             inici = treballador.iniciJornada
