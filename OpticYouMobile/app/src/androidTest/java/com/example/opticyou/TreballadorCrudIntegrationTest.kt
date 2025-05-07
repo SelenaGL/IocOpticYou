@@ -54,7 +54,7 @@ class TreballadorCrudIntegrationTest {
     fun testGetTreballadors() = runBlocking {
         RetrofitClient.setBaseUrlForTesting("https://10.0.2.2:8083/")
 
-        val loginResponse = ServerRequests.login("admin@exemple.com", "admin123")
+        val loginResponse = ServerRequests.login("admin@optica.com", "admin123")
         assertNotNull("El login no hauria de retornar null", loginResponse)
         assertTrue("El login ha de ser exitós", loginResponse!!.success)
         println("Token obtingut: ${loginResponse.token}")
@@ -72,7 +72,7 @@ class TreballadorCrudIntegrationTest {
     fun testUpdateTreballador() = runBlocking {
         RetrofitClient.setBaseUrlForTesting("https://10.0.2.2:8083/")
 
-        val loginResponse = ServerRequests.login("admin@exemple.com", "admin123")
+        val loginResponse = ServerRequests.login("administrador@optica.com", "admin123")
         assertNotNull("El login no hauria de retornar null", loginResponse)
         assertTrue("El login ha de ser exitós", loginResponse!!.success)
         println("Token obtingut: ${loginResponse.token}")

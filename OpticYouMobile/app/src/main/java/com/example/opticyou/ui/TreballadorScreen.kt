@@ -87,14 +87,6 @@ fun TreballadorScreen(
         Spacer(modifier = Modifier.height(8.dp))
 
         OutlinedTextField(
-            value = especialitat,
-            onValueChange = { especialitat = it },
-            label = { Text("Especialitat") },
-            modifier = Modifier.fillMaxWidth()
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-
-        OutlinedTextField(
             value = estat,
             onValueChange = { estat = it },
             label = { Text("Estat") },

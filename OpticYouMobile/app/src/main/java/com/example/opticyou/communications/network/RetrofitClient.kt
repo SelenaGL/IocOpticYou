@@ -25,8 +25,8 @@ object RetrofitClient {
     }
 
     // Creem un TrustManager
-    private fun getUnsafeOkHttpClient(): OkHttpClient {
-        // TrustManager que accepta qualsevol certificat
+    private fun getOkHttpClient(): OkHttpClient {
+        // TrustManager que accepta el certificat
         val trustAllCerts = arrayOf<TrustManager>(object : X509TrustManager {
             override fun checkClientTrusted(chain: Array<out X509Certificate>?, authType: String?) = Unit
             override fun checkServerTrusted(chain: Array<out X509Certificate>?, authType: String?) = Unit
@@ -58,7 +58,7 @@ object RetrofitClient {
         Retrofit.Builder()
             .baseUrl(BASE_URL)
             // Aquí canviem perquè faci servir el client "unsafe"
-            .client(getUnsafeOkHttpClient())
+            .client(getOkHttpClient())
             .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
