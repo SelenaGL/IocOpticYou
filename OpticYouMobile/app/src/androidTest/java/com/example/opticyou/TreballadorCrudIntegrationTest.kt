@@ -115,7 +115,7 @@ class TreballadorCrudIntegrationTest {
     fun testDeleteClient() = runBlocking {
         RetrofitClient.setBaseUrlForTesting("https://10.0.2.2:8083/")
 
-        val loginResponse = ServerRequests.login("admin@exemple.com", "admin123")
+        val loginResponse = ServerRequests.login("administrador@exemple.com", "admin123")
         assertNotNull("El login no hauria de retornar null", loginResponse)
         assertTrue("El login ha de ser exitós", loginResponse!!.success)
         println("Token obtingut: ${loginResponse.token}")
@@ -124,8 +124,8 @@ class TreballadorCrudIntegrationTest {
         // Creem un client que després eliminarem
         val newTreballador = Treballador(
             idUsuari = 0,
-            nom = "Client a eliminar",
-            email = "clienteliminar@optica.cat",
+            nom = "Treballador a eliminar",
+            email = "treballadoreliminar@optica.cat",
             contrasenya = "1234",
             especialitat = "Optometrista",
             estat = "actiu",

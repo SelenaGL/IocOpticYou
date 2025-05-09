@@ -39,9 +39,11 @@ import com.example.opticyou.data.DataSourceUser
 import com.example.opticyou.ui.LoginScreen
 import com.example.opticyou.ui.MenuAdminScreen
 import com.example.opticyou.ui.MenuUserScreen
-import androidx.activity.compose.BackHandler
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 import com.example.opticyou.ui.CenterScreen
 import com.example.opticyou.ui.ClientScreen
+import com.example.opticyou.ui.DiagnosticScreen
 import com.example.opticyou.ui.HistorialScreen
 import com.example.opticyou.ui.ProfileScreen
 import com.example.opticyou.ui.TreballadorScreen
@@ -109,9 +111,25 @@ fun OpticYouDemoApp(
 ) {
     val context = LocalContext.current
     val backStackEntry by navController.currentBackStackEntryAsState()
-    val currentScreen = Screens.valueOf(
-        backStackEntry?.destination?.route ?: Screens.Login.name
-    )
+
+    val destinationRoute = backStackEntry?.destination?.route
+
+    val currentScreen = when {
+        destinationRoute == Screens.Login.name -> Screens.Login
+        destinationRoute == Screens.UserMenu.name -> Screens.UserMenu
+        destinationRoute == Screens.AdminMenu.name -> Screens.AdminMenu
+        destinationRoute == Screens.Centres.name -> Screens.Centres
+        destinationRoute == Screens.Clients.name -> Screens.Clients
+        destinationRoute == Screens.Treballadors.name -> Screens.Treballadors
+        destinationRoute == Screens.Historials.name -> Screens.Historials
+
+        // RUTA DINÀMICA: Diagnostic amb paràmetre
+        destinationRoute?.startsWith("${Screens.Diagnostic.name}/") == true ->
+            Screens.Diagnostic
+
+        destinationRoute == Screens.Profile.name -> Screens.Profile
+        else -> Screens.Login
+    }
 
     // Botó de retrocés en els menús
     BackHandler(enabled = true) {
@@ -155,17 +173,23 @@ fun OpticYouDemoApp(
                                 "admin" -> {
                                     println("Navegant a AdminMenu")
                                     navController.navigate(Screens.AdminMenu.name) {
-                                        popUpTo(navController.graph.startDestinationId) { inclusive = true }
+                                        popUpTo(navController.graph.startDestinationId) {
+                                            inclusive = true
+                                        }
                                         launchSingleTop = true
                                     }
                                 }
+
                                 "client" -> {
                                     println("Navegant a UserMenu")
                                     navController.navigate(Screens.UserMenu.name) {
-                                        popUpTo(navController.graph.startDestinationId) { inclusive = true }
+                                        popUpTo(navController.graph.startDestinationId) {
+                                            inclusive = true
+                                        }
                                         launchSingleTop = true
                                     }
                                 }
+
                                 else -> {
                                     println("No s'ha pogut determinar el rol")
                                     // Per defecte, si no és admin ni user, podríem navegar al menú d'usuari
@@ -234,12 +258,10 @@ fun OpticYouDemoApp(
 
             composable(route = Screens.Historials.name) {
                 HistorialScreen(
-                    modifier = Modifier.fillMaxHeight()
-                )
-                HistorialScreen(
                     modifier = Modifier.fillMaxHeight(),
-                    navigateToDiagnostic = {
-                        navController.navigate(Screens.Diagnostic.name)
+                    navigateToDiagnostic = { historial ->
+                        // Aquí és on realment cridem el navigate amb l’ID de l’historial
+                        navController.navigate("${Screens.Diagnostic.name}/${historial.idhistorial}")
                     }
                 )
             }
@@ -248,9 +270,18 @@ fun OpticYouDemoApp(
                     modifier = Modifier.fillMaxHeight()
                 )
             }
-//            composable(route = Screens.Diagnostic.name) {
-//                DiagnosticScreen(modifier = Modifier.fillMaxSize())
-//            }
+            composable(
+                route = "${Screens.Diagnostic.name}/{historialId}",
+                arguments = listOf(
+                    navArgument("historialId") {
+                        type = NavType.LongType
+                    }
+                )
+            ) { backStackEntry ->
+                val id = backStackEntry.arguments!!.getLong("historialId")
+                // Ara sí que tens el ID i el pots passar a la teva pantalla
+                DiagnosticScreen(historialId = id)
+            }
         }
     }
 }

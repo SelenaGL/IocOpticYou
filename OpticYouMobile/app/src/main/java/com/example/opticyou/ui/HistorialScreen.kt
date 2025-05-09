@@ -18,6 +18,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.opticyou.data.Historial
 import com.example.opticyou.data.LoginResponse
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.opticyou.Screens
 
 /**
  * Pantalla composable per gestionar el CRUD dels historials.
@@ -116,8 +117,8 @@ fun HistorialScreen(
                 onClick = {
                     selectedHistorial?.let { navigateToDiagnostic(it) }
                 },
-                modifier = Modifier.weight(1f),
-                enabled = selectedHistorial != null
+                enabled = selectedHistorial != null,
+                modifier = Modifier.weight(1f)
             ) {
                 Text("Diagnòstic")
             }

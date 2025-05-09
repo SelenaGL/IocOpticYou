@@ -2,6 +2,7 @@ package com.example.opticyou.communications.network
 
 import com.example.opticyou.data.Center
 import com.example.opticyou.data.Client
+import com.example.opticyou.data.Diagnostic
 import com.example.opticyou.data.Historial
 import com.example.opticyou.data.LoginRequest
 import com.example.opticyou.data.LoginResponse
@@ -213,5 +214,20 @@ interface ApiService {
     fun deleteTreballador(
         @Path("id") id: Long, @Header("Authorization") token: String): Call<String>
 
+    @GET("diagnostic")
+    fun getAllDiagnostics(@Header("Authorization") token: String): Call<List<Diagnostic>>
+
+    @GET("diagnostic/historial/{id}")
+    fun getDiagnosticsByHistorial(@Path("id") historialId: Long,@Header("Authorization") token: String
+    ): Call<List<Diagnostic>>
+
+    @POST("diagnostic")
+    fun createDiagnostic(@Header("Authorization") token: String, @Body diagnostic: Diagnostic): Call<Void>
+
+    @PUT("diagnostic/update")
+    fun updateDiagnostic(@Header("Authorization") token: String, @Body diagnostic: Diagnostic): Call<String>
+
+    @DELETE("diagnostic/{id}")
+    fun deleteDiagnostic(@Path("id") id: Long, @Header("Authorization") token: String): Call<String>
 }
 
