@@ -18,6 +18,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.opticyou.data.Historial
 import com.example.opticyou.data.LoginResponse
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.opticyou.Screens
 
 /**
  * Pantalla composable per gestionar el CRUD dels historials.
@@ -30,6 +31,7 @@ import androidx.compose.ui.tooling.preview.Preview
 fun HistorialScreen(
     modifier: Modifier = Modifier,
     navigate: (LoginResponse) -> Unit = {},
+    navigateToDiagnostic: (Historial) -> Unit = {},
     viewModel: HistorialViewModel = viewModel()
 ) {
     val context = LocalContext.current
@@ -108,6 +110,17 @@ fun HistorialScreen(
                 modifier = Modifier.weight(1f)
             ) {
                 Text("Consulta")
+            }
+
+            //Botó per navegar a Diagnòstic
+            Button(
+                onClick = {
+                    selectedHistorial?.let { navigateToDiagnostic(it) }
+                },
+                enabled = selectedHistorial != null,
+                modifier = Modifier.weight(1f)
+            ) {
+                Text("Diagnòstic")
             }
         }
 

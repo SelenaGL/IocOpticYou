@@ -12,5 +12,6 @@ object DataSourceUser {
         "Demanar cita" to Screens.List.name,
         "Veure cites" to Screens.Add.name,
         "Pautes" to "4",
-        "Àrea personal" to "5")
+        "Perfil personal" to Screens.Profile.name
+        )
 }

@@ -25,6 +25,7 @@
         android:theme="@style/Theme.OpticYou"
         android:usesCleartextTraffic="true"
         android:enableOnBackInvokedCallback="true"
+        android:networkSecurityConfig="@xml/network_security_config"
         tools:targetApi="33">
         <activity
             android:name="com.example.opticyou.MainActivity"

@@ -2,9 +2,11 @@ package com.example.opticyou.communications.network
 
 import com.example.opticyou.data.Center
 import com.example.opticyou.data.Client
+import com.example.opticyou.data.Diagnostic
 import com.example.opticyou.data.Historial
 import com.example.opticyou.data.LoginRequest
 import com.example.opticyou.data.LoginResponse
+import com.example.opticyou.data.Treballador
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.Body
@@ -98,7 +100,7 @@ interface ApiService {
     fun getAllClients(@Header("Authorization") token: String): Call<List<Client>>
 
     /**
-     * Endpoint per obtenir un client pel seu identificador.
+     * Endpoint per obtenir un client pel seu identificador (per rol CLIENT només retorna el propi perfil)
      *
      * @param id Identificador del client.
      * @param token Token d'autenticació.
@@ -137,6 +139,32 @@ interface ApiService {
     @DELETE("client/{id}")
     fun deleteClient(@Path("id") id: Long, @Header("Authorization") token: String): Call<Void>
 
+
+    /**
+     * Actualitza les dades del client autenticat
+     *
+     * @param token Token d'autenticació.
+     * @param client Objecte [Client] amb les noves dades.
+     *
+     */
+    @PUT("client/update_client")
+    fun updateClientSelf(
+        @Header("Authorization") token: String,
+        @Body client: Client
+    ): Call<String>
+
+    /**
+     * Elimina el compte del client autenticat
+     *
+     * @param token Token d'autenticació.
+     * @return [Void] si l'operació ha estat exitosa.
+     */
+    @DELETE("client/delete_client")
+    fun deleteClientSelf(
+        @Header("Authorization") token: String
+    ): Call<String>
+
+
     /**
      * Endpoint per obtenir la llista de tots els historials.
      *
@@ -153,9 +181,9 @@ interface ApiService {
      * @param token Token d'autenticació.
      * @return L'objecte [Historial].
      */
-
     @GET("historial/{id}")
     fun getHistorialById(@Path("id") id: Long, @Header("Authorization") token: String): Call<Historial>
+
     /**
      * Endpoint per actualitzar un historial existent.
      *
@@ -163,9 +191,111 @@ interface ApiService {
      * @param historial Objecte [Historial] amb les noves dades.
      * @return Missatge informatiu.
      */
-
     @PUT("historial/update")
     fun updateHistorial(@Header("Authorization") token: String, @Body historial: Historial): Call<String>
 
+    /**
+     * Endpoint per crear un nou treballador.
+     *
+     * @param token Token d'autenticació
+     * @param treballador Objecte [Treballador] amb la informació del treballador a afegir.
+     * @return [Void] si la creació ha estat exitosa.
+     */
+    @POST("treballador")
+    fun createTreballador(
+        @Header("Authorization") token: String, @Body treballador: Treballador): Call<Void>
+
+    /**
+     * Obté la llista de tots els treballadors.
+     *
+     * @param token Token d'autenticació
+     * @return [List] de [Treballador] amb tots els treballadors registrats.
+     */
+    @GET("treballador")
+    fun getAllTreballadors(
+        @Header("Authorization") token: String): Call<List<Treballador>>
+
+    /**
+     * Obté un treballador pel seu identificador.
+     *
+     * @param id Identificador del treballador.
+     * @param token Token d'autenticació.
+     * @return [Treballador] corresponent a l'id proporcionat.
+     */
+    @GET("treballador/{id}")
+    fun getTreballadorById(
+        @Path("id") id: Long, @Header("Authorization") token: String): Call<Treballador>
+
+    /**
+     * Actualitza les dades d'un treballador existent.
+     *
+     * @param token Token d'autenticació.
+     * @param treballador Objecte [Treballador] amb les noves dades.
+     * @return missatge informatiu de l'operació.
+     */
+    @PUT("treballador/update")
+    fun updateTreballador(
+        @Header("Authorization") token: String, @Body treballador: Treballador): Call<String>
+
+    /**
+     * Elimina un treballador pel seu identificador.
+     *
+     * @param id Identificador del treballador a eliminar.
+     * @param token Token d'autenticació.
+     * @return missatge informatiu de l'operació.
+     */
+    @DELETE("treballador/{id}")
+    fun deleteTreballador(
+        @Path("id") id: Long, @Header("Authorization") token: String): Call<String>
+
+    /**
+     * Obté la llista de tots els diagnostics.
+     *
+     * @param token Token d'autenticació
+     * @return [List] de [Diagnostic].
+     */
+    @GET("diagnostic")
+    fun getAllDiagnostics(@Header("Authorization") token: String): Call<List<Diagnostic>>
+
+    /**
+     * Obté la llista de diagnostics associats a un historial concret.
+     *
+     * @param historialId Identificador de l'historial.
+     * @param token Token d'autenticació.
+     * @return [List] de [Diagnostic] associats a l'historial.
+     */
+    @GET("diagnostic/historial/{id}")
+    fun getDiagnosticsByHistorial(@Path("id") historialId: Long,@Header("Authorization") token: String
+    ): Call<List<Diagnostic>>
+
+    /**
+     * Crea un nou diagnostic.
+     *
+     * @param token Token d'autenticació.
+     * @param diagnostic Objecte [Diagnostic] amb la informació a afegir.
+     * @return [Void] si la creació ha estat exitosa.
+     */
+    @POST("diagnostic")
+    fun createDiagnostic(@Header("Authorization") token: String, @Body diagnostic: Diagnostic): Call<Void>
+
+    /**
+     * Actualitza un diagnostic existent.
+     *
+     * @param token Token d'autenticació.
+     * @param diagnostic Objecte [Diagnostic] amb les noves dades.
+     * @return missatge informatiu de l'operació.
+     */
+    @PUT("diagnostic/update")
+    fun updateDiagnostic(@Header("Authorization") token: String, @Body diagnostic: Diagnostic): Call<String>
+
+    /**
+     * Elimina un diagnostic pel seu identificador.
+     *
+     * @param id Identificador del diagnostic a eliminar.
+     * @param token Token d'autenticació.
+     * @return missatge informatiu de l'operació.
+     */
+    @DELETE("diagnostic/{id}")
+    fun deleteDiagnostic(@Path("id") id: Long, @Header("Authorization") token: String): Call<String>
 }
 
