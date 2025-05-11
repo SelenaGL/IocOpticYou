@@ -6,6 +6,6 @@ package com.example.opticyou.data
 data class Diagnostic(
     val iddiagnostic: Long? = null,
     val descripcio: String,
-    val date: String,
+    val date: String?,
     val historialId: Long
 )

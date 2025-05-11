@@ -194,39 +194,107 @@ interface ApiService {
     @PUT("historial/update")
     fun updateHistorial(@Header("Authorization") token: String, @Body historial: Historial): Call<String>
 
+    /**
+     * Endpoint per crear un nou treballador.
+     *
+     * @param token Token d'autenticació
+     * @param treballador Objecte [Treballador] amb la informació del treballador a afegir.
+     * @return [Void] si la creació ha estat exitosa.
+     */
     @POST("treballador")
     fun createTreballador(
         @Header("Authorization") token: String, @Body treballador: Treballador): Call<Void>
 
+    /**
+     * Obté la llista de tots els treballadors.
+     *
+     * @param token Token d'autenticació
+     * @return [List] de [Treballador] amb tots els treballadors registrats.
+     */
     @GET("treballador")
     fun getAllTreballadors(
         @Header("Authorization") token: String): Call<List<Treballador>>
 
+    /**
+     * Obté un treballador pel seu identificador.
+     *
+     * @param id Identificador del treballador.
+     * @param token Token d'autenticació.
+     * @return [Treballador] corresponent a l'id proporcionat.
+     */
     @GET("treballador/{id}")
     fun getTreballadorById(
         @Path("id") id: Long, @Header("Authorization") token: String): Call<Treballador>
 
+    /**
+     * Actualitza les dades d'un treballador existent.
+     *
+     * @param token Token d'autenticació.
+     * @param treballador Objecte [Treballador] amb les noves dades.
+     * @return missatge informatiu de l'operació.
+     */
     @PUT("treballador/update")
     fun updateTreballador(
         @Header("Authorization") token: String, @Body treballador: Treballador): Call<String>
 
+    /**
+     * Elimina un treballador pel seu identificador.
+     *
+     * @param id Identificador del treballador a eliminar.
+     * @param token Token d'autenticació.
+     * @return missatge informatiu de l'operació.
+     */
     @DELETE("treballador/{id}")
     fun deleteTreballador(
         @Path("id") id: Long, @Header("Authorization") token: String): Call<String>
 
+    /**
+     * Obté la llista de tots els diagnostics.
+     *
+     * @param token Token d'autenticació
+     * @return [List] de [Diagnostic].
+     */
     @GET("diagnostic")
     fun getAllDiagnostics(@Header("Authorization") token: String): Call<List<Diagnostic>>
 
+    /**
+     * Obté la llista de diagnostics associats a un historial concret.
+     *
+     * @param historialId Identificador de l'historial.
+     * @param token Token d'autenticació.
+     * @return [List] de [Diagnostic] associats a l'historial.
+     */
     @GET("diagnostic/historial/{id}")
     fun getDiagnosticsByHistorial(@Path("id") historialId: Long,@Header("Authorization") token: String
     ): Call<List<Diagnostic>>
 
+    /**
+     * Crea un nou diagnostic.
+     *
+     * @param token Token d'autenticació.
+     * @param diagnostic Objecte [Diagnostic] amb la informació a afegir.
+     * @return [Void] si la creació ha estat exitosa.
+     */
     @POST("diagnostic")
     fun createDiagnostic(@Header("Authorization") token: String, @Body diagnostic: Diagnostic): Call<Void>
 
+    /**
+     * Actualitza un diagnostic existent.
+     *
+     * @param token Token d'autenticació.
+     * @param diagnostic Objecte [Diagnostic] amb les noves dades.
+     * @return missatge informatiu de l'operació.
+     */
     @PUT("diagnostic/update")
     fun updateDiagnostic(@Header("Authorization") token: String, @Body diagnostic: Diagnostic): Call<String>
 
+    /**
+     * Elimina un diagnostic pel seu identificador.
+     *
+     * @param id Identificador del diagnostic a eliminar.
+     * @param token Token d'autenticació.
+     * @return missatge informatiu de l'operació.
+     */
     @DELETE("diagnostic/{id}")
     fun deleteDiagnostic(@Path("id") id: Long, @Header("Authorization") token: String): Call<String>
 }

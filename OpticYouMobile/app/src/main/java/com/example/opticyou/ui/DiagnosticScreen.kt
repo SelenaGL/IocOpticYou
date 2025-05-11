@@ -132,7 +132,7 @@ fun DiagnosticScreen(
                     .clickable {
                         selected = diag
                         descripcio = diag.descripcio
-                        date = diag.date
+                        date = diag.date.toString()
                     }
                     .padding(vertical = 8.dp)
                 ) {

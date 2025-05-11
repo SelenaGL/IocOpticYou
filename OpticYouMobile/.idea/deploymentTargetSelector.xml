@@ -5,16 +5,13 @@
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="loginAdminRealServer()">
+      <SelectionState runConfigName="testGetClients()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="loginUserRealServer()">
+      <SelectionState runConfigName="testCreateDiagnostic()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="TreballadorCrudIntegrationTest">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
-      <SelectionState runConfigName="testCreateTreballador()">
+      <SelectionState runConfigName="DiagnosticCrudIntegrationTest">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>

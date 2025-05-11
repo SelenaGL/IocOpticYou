@@ -21,7 +21,7 @@ class ProfileCrudIntegrationTest {
     fun testGetClients() = runBlocking {
         RetrofitClient.setBaseUrlForTesting("https://10.0.2.2:8083/")
 
-        val loginResponse = ServerRequests.login("selena@optica.cat", "1234")
+        val loginResponse = ServerRequests.login("adriana@optica.cat", "5678")
         assertNotNull("El login no hauria de retornar null", loginResponse)
         assertTrue("El login ha de ser exitós", loginResponse!!.success)
         println("Token obtingut: ${loginResponse.token}")
@@ -39,7 +39,7 @@ class ProfileCrudIntegrationTest {
     fun testUpdateClient() = runBlocking {
         RetrofitClient.setBaseUrlForTesting("https://10.0.2.2:8083/")
 
-        val loginResponse = ServerRequests.login("selena@optica.cat", "1234")
+        val loginResponse = ServerRequests.login("joan@optica.cat", "1111")
         assertNotNull("El login no hauria de retornar null", loginResponse)
         assertTrue("El login ha de ser exitós", loginResponse!!.success)
         println("Token obtingut: ${loginResponse.token}")
@@ -65,7 +65,7 @@ class ProfileCrudIntegrationTest {
     fun testDeleteClient() = runBlocking {
         RetrofitClient.setBaseUrlForTesting("https://10.0.2.2:8083/")
 
-        val loginResponse = ServerRequests.login("selena@optica.cat", "1234")
+        val loginResponse = ServerRequests.login("carme@optica.cat", "2222")
         assertNotNull("El login no hauria de retornar null", loginResponse)
         assertTrue("El login ha de ser exitós", loginResponse!!.success)
         println("Token obtingut: ${loginResponse.token}")
