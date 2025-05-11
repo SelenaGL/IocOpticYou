@@ -19,7 +19,7 @@ import com.example.opticyou.data.Diagnostic
 import com.example.opticyou.data.LoginResponse
 
 /**
- * Pantalla composable per gestionar el CRUD dels historials.
+ * Pantalla composable per gestionar el CRUD dels diagnòstics.
  *
  * @param modifier Modifier opcional.
  * @param navigate Funció de navegació

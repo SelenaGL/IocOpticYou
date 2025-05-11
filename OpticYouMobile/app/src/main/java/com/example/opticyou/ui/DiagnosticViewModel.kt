@@ -7,6 +7,9 @@ import kotlinx.coroutines.flow.StateFlow
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 
+/**
+ * ViewModel que gestiona les operacions CRUD per als diagnòstics.
+ */
 class DiagnosticViewModel: IOViewModel() {
 
     private val _diagnostics = MutableStateFlow<List<Diagnostic>>(emptyList())
